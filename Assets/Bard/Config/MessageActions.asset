@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2446243472448784989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff7a03bb2ecd4bed98df7bd3cfa8abd, type: 3}
+  m_Name: Set Quest Progress
+  m_EditorClassIdentifier: 
+  Id: 0
+  Step: 0
+  _Name: Quests/Progress Quest
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a558ecce7bf4467c82d2cfadf64b7d6, type: 3}
+  m_Name: MessageActions
+  m_EditorClassIdentifier: 
+  m_Types:
+  - Id: 0
+    Action: {fileID: 0}
+  - Id: 1
+    Action: {fileID: -2446243472448784989}
+  - Id: 2
+    Action: {fileID: 8147122041665840591}
+  - Id: 3
+    Action: {fileID: 5603371310544675545}
+--- !u!114 &5603371310544675545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d193a419ebe642929d4ef5d23a8b629, type: 3}
+  m_Name: Add Quest
+  m_EditorClassIdentifier: 
+  Id: 0
+  _Name: Quests/Add Quest
+--- !u!114 &8147122041665840591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db876375f7344427a884b06931244177, type: 3}
+  m_Name: Set Quest Condition
+  m_EditorClassIdentifier: 
+  Id: 0
+  Condition: 
+  _Name: Quests/Set Condition

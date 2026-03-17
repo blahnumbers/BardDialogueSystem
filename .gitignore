@@ -1,0 +1,51 @@
+# ===========================
+# Default Collab Ignore Rules
+# ===========================
+
+# OS Generated
+# ============
+.DS_Store
+._*
+.Spotlight-V1
+.Trashes
+#Icon?
+ehthumbs.db
+[Tt]humbs.db
+[Dd]esktop.ini
+
+# Visual Studio / MonoDevelop generated
+# =====================================
+[Ee]xported[Oo]bj/
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+
+# Unity generated
+# ===============
+[Oo]bj/
+[Bb]uild
+sysinfo.txt
+*.stackdump
+Assets/Scenes/*Profiles*
+
+
+# Custom ignore rules
+# Ignore default Unity folders where most stuff isn't needed
+Logs/
+obj/
+Temp/
+UserSettings/
+Library/
+.vs/
+Assets/Bakery/ft*
+Assets/Editor/x64/Bakery/.*
+/bakery_times.log
+/..gitignore.un~
+/.gitignore~
+.vscode/
+/.utmp

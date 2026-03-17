@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca3d953ce18d41ab8142f9aeb7c4c0b, type: 3}
+  m_Name: DialogueProjectSettings
+  m_EditorClassIdentifier: 
+  Messages: {fileID: 11400000, guid: 917865edbac8849e4a78600a157365b4, type: 2}
+  MessageActions: {fileID: 11400000, guid: 510c2f008a5dd499493f945fa806b6eb, type: 2}
+  Quests: {fileID: 11400000, guid: c333d482a54544a689b9a609bff3e4de, type: 2}
