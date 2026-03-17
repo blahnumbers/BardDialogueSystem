@@ -2,7 +2,8 @@ using System;
 using UnityEditor;
 
 namespace Bard.Editor {
-	public partial class QuestProgressActionDrawer : DialogueActionDrawer {
+	[DialogueActionDrawer(typeof(QuestProgressAction))]
+	public class QuestProgressActionDrawer : DialogueActionDrawer {
 		public override void DrawInspector(SerializedMessageAction data, MessageActionRects rects, DialogueProjectSettings prefs) {
 			EditorGUI.LabelField(rects.Label1, "Id");
 			data.CValue.intValue = EditorGUI.Popup(rects.Input1, data.CValue.intValue, prefs.Quests.QuestNames);

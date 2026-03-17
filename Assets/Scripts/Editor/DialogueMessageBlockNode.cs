@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Reflection;
 using Bard.Editor;
+using UnityEngine.EventSystems;
 
 namespace Bard.XNodeEditor {
 	public class SerializedDialogueRequirement {
@@ -76,7 +77,7 @@ namespace Bard.XNodeEditor {
 			get {
 				bool isDefault = true;
 				for (int i = 0; i < Custom.arraySize && isDefault; i++) {
-					isDefault = Custom.GetArrayElementAtIndex(i).FindPropertyRelative("Type").enumValueIndex == 0;
+					isDefault = Custom.GetArrayElementAtIndex(i).FindPropertyRelative("Type").intValue == 0;
 				}
 				return isDefault;
 			}
@@ -92,7 +93,7 @@ namespace Bard.XNodeEditor {
 			Property.isExpanded = !IsDefault;
 			
 			var id = prop.FindPropertyRelative("Id");
-			var messageNode = prop.serializedObject.targetObject as DialogueMessagesNode;
+			var messageNode = prop.serializedObject.targetObject as DialogueMessageBlockNode;
 			foreach (var message in messageNode.Messages) {
 				if (message.Actions.Id == id.stringValue) {
 					Target = message.Actions;
@@ -111,7 +112,7 @@ namespace Bard.XNodeEditor {
 					return EditorGUI.GetPropertyHeight(Custom.GetArrayElementAtIndex(index));
 				},
 				onAddCallback = list => {
-					Target.CustomA.Add(new());
+					Target.CustomA.Add(default);
 					prop.serializedObject.Update();
 				},
 				onRemoveCallback = list => {
@@ -122,10 +123,10 @@ namespace Bard.XNodeEditor {
 		}
 	}
 
-	[CustomNodeEditor(typeof(DialogueMessagesNode))]
-	public class DialogueMessagesNodeEditor : NodeEditor {
+	[CustomNodeEditor(typeof(DialogueMessageBlockNode))]
+	public class DialogueMessageBlockNodeEditor : NodeEditor {
 		private ColorBlock m_Colors;
-		private DialogueMessagesNode m_Target;
+		private DialogueMessageBlockNode m_Target;
 		private ReorderableList m_List;
 		private SerializedProperty m_Messages;
 		private Action m_DeferredAction = null;
@@ -144,7 +145,7 @@ namespace Bard.XNodeEditor {
 				pressedColor = FromHEX("#1e413cff"),
 				disabledColor = FromHEX("#650a0aff")
 			};
-			m_Target = target as DialogueMessagesNode;
+			m_Target = target as DialogueMessageBlockNode;
 			m_Messages = serializedObject.FindProperty("Messages");
 
 			List<SerializedProperty> m_SerializedMessages = new(m_Messages.arraySize);
@@ -194,7 +195,7 @@ namespace Bard.XNodeEditor {
 				},
 				onAddCallback = list => {
 					m_DeferredAction = () => {
-						m_Target.AddDynamicOutput(typeof(DialogueMessagesNode), fieldName: $"{list.serializedProperty.arraySize - 1}", typeConstraint: Node.TypeConstraint.Strict);
+						m_Target.AddDynamicOutput(typeof(DialogueMessageBlockNode), fieldName: $"{list.serializedProperty.arraySize - 1}", typeConstraint: Node.TypeConstraint.Strict);
 						reloadMessages();
 					};
 					DialogueMessageNodeDrawer.RemoveCache(m_Target.Id);
@@ -221,7 +222,7 @@ namespace Bard.XNodeEditor {
 							m_Target.RemoveDynamicPort($"{i}");
 						}
 						for (int i = 0; i < m_Target.Messages.Length; i++) {
-							var port = m_Target.AddDynamicOutput(typeof(DialogueMessagesNode), fieldName: $"{i}", typeConstraint: Node.TypeConstraint.Strict);
+							var port = m_Target.AddDynamicOutput(typeof(DialogueMessageBlockNode), fieldName: $"{i}", typeConstraint: Node.TypeConstraint.Strict);
 							if (oldPorts.TryGetValue(m_Target.Messages[i].Id, out var nodePort)) {
 								port.Connect(nodePort);
 							}
@@ -235,7 +236,7 @@ namespace Bard.XNodeEditor {
 
 		public override void OnBodyGUI() {
 			serializedObject.UpdateIfRequiredOrScript();
-			NodeEditorGUILayout.PortField(target.GetInputPort(nameof(DialogueMessagesNode.Input)));
+			NodeEditorGUILayout.PortField(target.GetInputPort(nameof(DialogueMessageBlockNode.Input)));
 			m_List.DoLayoutList();
 			serializedObject.ApplyModifiedProperties();
 		}
@@ -247,6 +248,7 @@ namespace Bard.XNodeEditor {
 		public SerializedProperty Requirements;
 		public SerializedProperty Actions;
 		public SerializedProperty Type;
+		public float CachedHeight = 0f;
 
 		public SerializedMessageNodeProperties(SerializedProperty property) {
 			IsOneOff = property.FindPropertyRelative("IsOneOff");
@@ -335,139 +337,6 @@ namespace Bard.XNodeEditor {
 		}
 	}
 
-	[CustomPropertyDrawer(typeof(DialogueMessageNodeActionCustom))]
-	public class DialogueMessageNodeActionCustomDrawer : PropertyDrawer {
-		private static Rect m_BaseRect;
-		private static MessageActionRects m_Rects;
-
-		static DialogueMessageNodeActionCustomDrawer() {
-			m_BaseRect = new(0, 0, 0, EditorGUIUtility.singleLineHeight);
-			m_Rects = new(EditorGUIUtility.singleLineHeight);
-		}
-
-		private void SetRects(Rect position) {
-			m_BaseRect.x = m_Rects.Label1.x = m_Rects.Label2.x = position.x;
-			m_BaseRect.y = position.y;
-			m_BaseRect.width = position.width;
-
-			m_Rects.Label1.y = m_Rects.Input1.y = m_Rects.Label2.y = m_Rects.Input2.y = m_BaseRect.y + m_BaseRect.height + 2;
-			m_Rects.Label1.width = m_Rects.Label2.width = position.width / 3 - 4;
-			m_Rects.Input1.width = m_Rects.Input2.width = position.width - m_Rects.Label1.width - 4;
-
-			m_Rects.Input1.x = m_Rects.Input2.x = m_Rects.Label1.x + m_Rects.Label1.width + 4;
-
-			m_BaseRect.height = m_Rects.Label1.height = m_Rects.Input1.height = m_Rects.Label2.height = m_Rects.Input2.height = EditorGUIUtility.singleLineHeight;
-		}
-
-		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-			SetRects(position);
-
-			var data = SerializedMessageAction.GetValue(property);
-			var prefs = DialogueSystemPreferences.GetOrCreateSettings();
-
-			data.Type.intValue = EditorGUI.Popup(m_BaseRect, data.Type.intValue, prefs.MessageActions.ActionNames);
-			var action = prefs.MessageActions.GetById(data.Type.intValue);
-
-			var drawer = DialogueActionDrawerRegistry.GetDrawer(action.GetType());
-			drawer?.DrawInspector(data, m_Rects, prefs);
-
-			/*var action = (DialogueMessageNodeActionType)EditorGUI.EnumPopup(m_BaseRect, (DialogueMessageNodeActionType)data.Type.intValue);
-			switch (action) {
-				case DialogueMessageNodeActionType.QuestProgress:
-					EditorGUI.LabelField(m_LabelRect1, "Id");
-					data.Quest.intValue = EditorGUI.Popup(m_InputRect1, data.Quest.intValue, prefs.Quests.QuestNames);
-					m_LabelRect2.y = m_InputRect2.y = m_InputRect1.y + m_InputRect1.height + 2;
-
-					targetClass = QuestReflection.Get(prefs.Quests.GetById(data.Quest.intValue));
-					if (targetClass == null) break;
-
-					EditorGUI.LabelField(m_LabelRect2, "Step");
-					var stepValue = targetClass.GetStepValue(data.IValue.intValue);
-					data.IValue.intValue = Convert.ToInt32(EditorGUI.EnumPopup(m_InputRect2, stepValue));
-					break;
-				case DialogueMessageNodeActionType.QuestCondition:
-					EditorGUI.LabelField(m_LabelRect1, "Id");
-					data.Quest.intValue = EditorGUI.Popup(m_InputRect1, data.Quest.intValue, prefs.Quests.QuestNames);
-					m_LabelRect2.y = m_InputRect2.y = m_InputRect1.y + m_InputRect1.height + 2;
-
-					targetClass = QuestReflection.Get(prefs.Quests.GetById(data.Quest.intValue));
-					if (targetClass == null || targetClass.ConditionsNames.Length == 0) break;
-
-					EditorGUI.LabelField(m_LabelRect2, "Condition");
-					var conditionValue = targetClass.GetConditionIndex(data.SValue.stringValue);
-					conditionValue = EditorGUI.Popup(m_InputRect2, conditionValue, targetClass.ConditionsNamesDisplay);
-					data.SValue.stringValue = targetClass.ConditionsNames[conditionValue];
-					break;
-				case DialogueMessageNodeActionType.QuestAdd:
-					EditorGUI.LabelField(m_LabelRect1, "Id");
-					data.Quest.intValue = EditorGUI.Popup(m_InputRect1, data.Quest.intValue, prefs.Quests.QuestNames);
-					break;
-				case DialogueMessageNodeActionType.PlayCinematic:
-					EditorGUI.LabelField(m_LabelRect1, "Id");
-					data.Cinematic.intValue = (int)(BardCinematicId)EditorGUI.EnumPopup(m_InputRect1, (BardCinematicId)data.Cinematic.intValue);
-					break;
-				case DialogueMessageNodeActionType.PlayLute:
-				case DialogueMessageNodeActionType.HideInteractable:
-				case DialogueMessageNodeActionType.ShowInteractable:
-					EditorGUI.LabelField(m_LabelRect1, action == DialogueMessageNodeActionType.PlayLute ? "Song Name" : "Identifier");
-					data.SValue.stringValue = EditorGUI.TextField(m_InputRect1, data.SValue.stringValue);
-					break;
-				case DialogueMessageNodeActionType.AttitudeChange:
-				case DialogueMessageNodeActionType.NameChange:
-					EditorGUI.LabelField(m_LabelRect1, "NPC Name");
-					Enum.TryParse(data.SValue.stringValue, out BardNPCId targetNpc);
-					data.SValue.stringValue = EditorGUI.EnumPopup(m_InputRect1, targetNpc).ToString();
-					m_LabelRect2.y = m_InputRect2.y = m_InputRect1.y + m_InputRect1.height + 2;
-					EditorGUI.LabelField(m_LabelRect2, action == DialogueMessageNodeActionType.NameChange ? "Name ID" : "Change Value");
-					data.IValue.intValue = EditorGUI.IntField(m_InputRect2, data.IValue.intValue);
-					break;
-				case DialogueMessageNodeActionType.HungerChange:
-				case DialogueMessageNodeActionType.BalanceChange:
-					EditorGUI.LabelField(m_LabelRect1, "Change Value");
-					data.IValue.intValue = EditorGUI.IntField(m_InputRect1, data.IValue.intValue);
-					break;
-				case DialogueMessageNodeActionType.SkillCheck:
-					m_LabelRect1.width = position.width;
-					EditorGUI.PropertyField(m_LabelRect1, data.SkillCheck);
-					break;
-				default:
-					break;
-
-			}
-			data.Type.intValue = (int)action;*/
-		}
-
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-			var data = SerializedMessageAction.GetValue(property);
-			if (data == null) return EditorGUIUtility.singleLineHeight;
-
-			if (Event.current.type == EventType.Layout) {
-				var height = EditorGUIUtility.singleLineHeight + 4;
-				switch ((DialogueMessageNodeActionType)data.Type.intValue) {
-					case DialogueMessageNodeActionType.QuestProgress:
-					case DialogueMessageNodeActionType.QuestCondition:
-					case DialogueMessageNodeActionType.AttitudeChange:
-					case DialogueMessageNodeActionType.NameChange:
-						height += EditorGUIUtility.singleLineHeight * 2 + 4;
-						break;
-					case DialogueMessageNodeActionType.QuestAdd:
-					case DialogueMessageNodeActionType.PlayCinematic:
-					case DialogueMessageNodeActionType.PlayLute:
-					case DialogueMessageNodeActionType.HungerChange:
-					case DialogueMessageNodeActionType.BalanceChange:
-					case DialogueMessageNodeActionType.HideInteractable:
-					case DialogueMessageNodeActionType.ShowInteractable:
-						height += EditorGUIUtility.singleLineHeight + 2;
-						break;
-					case DialogueMessageNodeActionType.SkillCheck:
-						height += EditorGUI.GetPropertyHeight(data.SkillCheck) + 2;
-						break;
-				}
-				data.CachedHeight = height;
-			}
-			return data.CachedHeight;
-		}
-	}
 	public class SerializedMessageSkillCheckModifier {
 		private static readonly Dictionary<string, SerializedMessageSkillCheckModifier> m_Cache = new();
 
@@ -619,7 +488,7 @@ namespace Bard.XNodeEditor {
 		public SerializedMessageSkillCheck(SerializedProperty property, string id) {
 			// Find target skill check
 			// There must a better way to do it... right?
-			var messageNode = property.serializedObject.targetObject as DialogueMessagesNode;
+			var messageNode = property.serializedObject.targetObject as DialogueMessageBlockNode;
 			foreach (var message in messageNode.Messages) {
 				foreach (var action in message.Actions.CustomA) {
 					if (action.SkillCheck.Id == id) {
@@ -724,303 +593,9 @@ namespace Bard.XNodeEditor {
 		}
 	}
 
-	[CustomPropertyDrawer(typeof(DialogueMessageNodeActions))]
-	public class DialogueMessageNodeActionsDrawer : PropertyDrawer {
-		private static readonly Dictionary<string, SerializedDialogueAction> m_Cache = new();
-
-		private static readonly Texture2D m_BackgroundTexture;
-		private static readonly GUIStyle m_HasChangesStyle;
-		private static readonly GUIStyle m_DefaultStyle;
-		private static readonly GUIStyle m_FoldoutOverrideStyle;
-		private static readonly GUIStyle m_FoldoutStyle;
-
-		private static Rect m_BackgroundRect;
-		private static Rect m_FoldoutRect;
-		private static Rect m_AttitudeRect;
-		private static Rect m_AttitudeFieldRect;
-		private static Rect m_CustomRect;
-
-		public static Color BackgroundColor = Color.white;
-		static DialogueMessageNodeActionsDrawer() {
-			m_BackgroundTexture = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
-			m_BackgroundTexture.SetPixel(0, 0, new Color(0f, 0f, 0f, 0.25f));
-			m_BackgroundTexture.Apply();
-			m_HasChangesStyle = new() {
-				fontStyle = FontStyle.Bold,
-				normal = { background = m_BackgroundTexture }
-			};
-			m_DefaultStyle = new();
-			m_FoldoutOverrideStyle = new GUIStyle(EditorStyles.foldout) {
-				fontStyle = FontStyle.Bold,
-				normal = { textColor = Color.yellow }
-			};
-			m_FoldoutStyle = new GUIStyle(EditorStyles.foldout);
-
-			m_BackgroundRect = new(0, 0, 0, 18f);
-			m_FoldoutRect = new(0, 0, 0, EditorGUIUtility.singleLineHeight);
-			m_AttitudeRect = new(24f, EditorGUIUtility.singleLineHeight, 0, EditorGUIUtility.singleLineHeight);
-			m_AttitudeFieldRect = new(0, EditorGUIUtility.singleLineHeight, 80f, EditorGUIUtility.singleLineHeight);
-			m_CustomRect = new(24f, EditorGUIUtility.singleLineHeight * 2 + 2f, 0, 0);
-		}
-
-		private SerializedDialogueAction GetCachedValue(SerializedProperty property) {
-			string id = property.FindPropertyRelative("Id").stringValue;
-			if (!m_Cache.TryGetValue(id, out var target)) {
-				target = new(property);
-				m_Cache.Add(id, target);
-			}
-			return target;
-		}
-
-		public static void RemoveCache(SerializedProperty property) {
-			var id = property.FindPropertyRelative("Id").stringValue;
-			if (m_Cache.TryGetValue(id, out var value)) {
-				if (value.Target != null && value.Target.CustomA != null) {
-					foreach (var action in value.Target.CustomA) {
-						if (action.SkillCheck != null) {
-							SerializedMessageSkillCheck.RemoveCache(action.SkillCheck.Id);
-						}
-					}
-				}
-				m_Cache.Remove(id);
-			}
-		}
-
-		private void SetRects(Rect position) {
-			m_BackgroundRect.x = m_FoldoutRect.x = position.x;
-			m_BackgroundRect.y = m_FoldoutRect.y = position.y;
-			m_BackgroundRect.width = position.width;
-
-			position.width -= 2;
-			m_FoldoutRect.width = position.width;
-
-			m_AttitudeRect.x = position.x + 24f;
-			m_AttitudeFieldRect.x = position.x + position.width - 80f;
-			m_AttitudeRect.y = m_AttitudeFieldRect.y = position.y + EditorGUIUtility.singleLineHeight;
-			m_AttitudeRect.width = position.width - 104f;
-
-			m_CustomRect.x = position.x + 24f;
-			m_CustomRect.y = position.y + EditorGUIUtility.singleLineHeight * 2f + 2f;
-			m_CustomRect.width = position.width - 24f;
-			m_CustomRect.height = position.height - EditorGUIUtility.singleLineHeight;
-		}
-
-		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-			SetRects(position);
-
-			var m_Target = GetCachedValue(property);
-			var valuesDefault = m_Target.IsDefault;
-			m_BackgroundRect.height = GetPropertyHeight(property, label);
-			GUI.Box(m_BackgroundRect, GUIContent.none, valuesDefault ? m_DefaultStyle : m_HasChangesStyle);
-
-			property.isExpanded = EditorGUI.Foldout(m_FoldoutRect, property.isExpanded, label, true, valuesDefault ? m_FoldoutStyle : m_FoldoutOverrideStyle);
-
-			if (!property.isExpanded) {
-				return;
-			}
-
-			var color = GUI.contentColor;
-			if (!m_Target.IsAttitudeDefault) {
-				GUI.contentColor = Color.yellow;
-			}
-			GUI.Label(m_AttitudeRect, "Attitude Change");
-			m_Target.Attitude.intValue = EditorGUI.IntField(m_AttitudeFieldRect, m_Target.Attitude.intValue);
-			GUI.contentColor = color;
-
-			if (!m_Target.IsCustomDefault) {
-				GUI.contentColor = Color.yellow;
-			}
-			var bgColor = GUI.backgroundColor;
-			GUI.backgroundColor = BackgroundColor;
-			m_Target.CustomList.DoList(m_CustomRect);
-			GUI.backgroundColor = bgColor;
-			GUI.contentColor = color;
-		}
-
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-			if (property == null) {
-				return EditorGUIUtility.singleLineHeight;
-			}
-			var m_Target = GetCachedValue(property);
-			var height = EditorGUIUtility.singleLineHeight + 2;
-			if (property.isExpanded) {
-				height += EditorGUIUtility.singleLineHeight + 2 + (m_Target.Custom.arraySize > 0 ? m_Target.CustomList.GetHeight() : 70f);
-			}
-			return height;
-		}
-	}
-
-	[Serializable]
-	public enum DialogueMessageNodeActionType {
-		Undefined,
-		[InspectorName("Quests/Set Progress")]
-		QuestProgress,
-		[InspectorName("Quests/Set Condition")]
-		QuestCondition,
-		[InspectorName("Quests/Add New")]
-		QuestAdd,
-		PlayCinematic,
-		PlayLute,
-		AttitudeChange,
-		HungerChange,
-		BalanceChange,
-		SkillCheck,
-		NameChange,
-		[InspectorName("Interactables/Hide")]
-		HideInteractable,
-		[InspectorName("Interactables/Show")]
-		ShowInteractable
-	}
-
-	[Serializable]
-	public class DialogueMessageNodeActionCustom {
-		public string Id = Guid.NewGuid().ToString("N");
-		public DialogueMessageNodeActionType Type;
-		//public BardCinematicId CinematicId;
-		//public BardQuestId QuestId;
-		public int IValue;
-		public string SValue;
-		public DialogueMessageSkillCheck SkillCheck;
-
-		public bool IsValid => Type != DialogueMessageNodeActionType.Undefined;
-
-		public DialogueMessageNodeActionCustom() {
-			Type = DialogueMessageNodeActionType.Undefined;
-	//		CinematicId = BardCinematicId.Undefined;
-	//		QuestId = BardQuestId.Undefined;
-			IValue = 0;
-			SValue = string.Empty;
-			SkillCheck = new() { Complexity = 10 };
-		}
-
-		public DialogueMessageNodeActionCustom(string input) {
-			/*Match m = Regex.Match(input, @"^ProgressQuest:(\w+):(\d+)$");
-			if (m.Success) {
-				if (Enum.TryParse(m.Groups[1].Value, out QuestId) && int.TryParse(m.Groups[2].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out IValue)) {
-					Type = DialogueMessageNodeActionType.QuestProgress;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid QuestProgress action type.");
-			}
-			m = Regex.Match(input, @"^AddCondition:(\w+):(\w+)$");
-			if (m.Success) {
-				if (Enum.TryParse(m.Groups[1].Value, out QuestId)) {
-					Type = DialogueMessageNodeActionType.QuestCondition;
-					SValue = m.Groups[2].Value;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid QuestCondition action type.");
-			}
-			m = Regex.Match(input, @"^AddQuest:(\w+)$");
-			if (m.Success) {
-				if (Enum.TryParse(m.Groups[1].Value, out QuestId)) {
-					Type = DialogueMessageNodeActionType.QuestAdd;
-					SValue = m.Groups[2].Value;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid QuestAdd action type.");
-			}
-			m = Regex.Match(input, @"^PlayCinematic:(\w+)$");
-			if (m.Success) {
-				if (Enum.TryParse(m.Groups[1].Value, out CinematicId)) {
-					Type = DialogueMessageNodeActionType.PlayCinematic;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid PlayCinematic action type.");
-			}
-			m = Regex.Match(input, @"^AttitudeChange:(\w+):(-?\d+)$");
-			if (m.Success) {
-				if (int.TryParse(m.Groups[2].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out IValue)) {
-					Type = DialogueMessageNodeActionType.AttitudeChange;
-					SValue = m.Groups[1].Value;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid AttitudeChange action type.");
-			}
-			m = Regex.Match(input, @"^UpdateBalance:(-?\d+)$");
-			if (m.Success) {
-				if (int.TryParse(m.Groups[1].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out IValue)) {
-					Type = DialogueMessageNodeActionType.BalanceChange;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid BalanceChange action type.");
-			}
-			m = Regex.Match(input, @"^UpdateHunger:(-?\d)$");
-			if (m.Success) {
-				if (int.TryParse(m.Groups[1].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out IValue)) {
-					Type = DialogueMessageNodeActionType.HungerChange;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid HungerChange action type.");
-			}
-			m = Regex.Match(input, @"^PlayLute:(\w+)$");
-			if (m.Success) {
-				Type = DialogueMessageNodeActionType.PlayLute;
-				SValue = m.Groups[1].Value;
-				return;
-			}
-			m = Regex.Match(input, @"^SkillCheck:(.+)$");
-			if (m.Success) {
-				if (DialogueMessageSkillCheck.TryParse(m.Groups[1].Value, null, out SkillCheck)) {
-					Type = DialogueMessageNodeActionType.SkillCheck;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid SkillCheck action type.");
-			}
-			m = Regex.Match(input, @"^NameChange:(\w+):(\d+)$");
-			if (m.Success) {
-				if (int.TryParse(m.Groups[2].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out IValue)) {
-					Type = DialogueMessageNodeActionType.NameChange;
-					SValue = m.Groups[1].Value;
-					return;
-				}
-				throw new Exception($"Error parsing {input} as a valid NameChange action type.");
-			}
-			m = Regex.Match(input, @"^Hide:(\w+)$");
-			if (m.Success) {
-				Type = DialogueMessageNodeActionType.HideInteractable;
-				SValue = m.Groups[1].Value;
-				return;
-			}
-			m = Regex.Match(input, @"^Show:(\w+)$");
-			if (m.Success) {
-				Type = DialogueMessageNodeActionType.ShowInteractable;
-				SValue = m.Groups[1].Value;
-				return;
-			}*/
-			throw new Exception($"Error parsing {input} as a valid action type.");
-		}
-
-		public override string ToString() {
-			return Type switch {
-				/*DialogueMessageNodeActionType.QuestProgress => "ProgressQuest:" + QuestId.ToString() + ":" + IValue,
-				DialogueMessageNodeActionType.QuestCondition => "AddCondition:" + QuestId.ToString() + ":" + SValue,
-				DialogueMessageNodeActionType.QuestAdd => "AddQuest:" + QuestId.ToString(),
-				DialogueMessageNodeActionType.PlayCinematic => "PlayCinematic:" + CinematicId.ToString(),*/
-				DialogueMessageNodeActionType.PlayLute => "PlayLute:" + SValue,
-				DialogueMessageNodeActionType.AttitudeChange => "AttitudeChange:" + SValue + ":" + IValue,
-				DialogueMessageNodeActionType.BalanceChange => "UpdateBalance:" + IValue,
-				DialogueMessageNodeActionType.HungerChange => "UpdateHunger:" + IValue,
-				// Skill checks are no longer part of the Actions spec
-				//DialogueMessageNodeActionType.SkillCheck => "SkillCheck:" + SkillCheck.ToString(),
-				DialogueMessageNodeActionType.NameChange => "NameChange:" + SValue + ":" + IValue,
-				DialogueMessageNodeActionType.HideInteractable => "Hide:" + SValue,
-				DialogueMessageNodeActionType.ShowInteractable => "Show:" + SValue,
-				_ => "",
-			};
-		}
-	}
-
-	[Serializable]
-	public class DialogueMessageNodeActions {
-		public string Id = Guid.NewGuid().ToString("N");
-		public int AttitudeChange = 0;
-		public List<DialogueMessageNodeActionCustom> CustomA = new();
-	}
-
 	[NodeWidth(380)]
 	[NodeTint("#142b28")]
-	public class DialogueMessagesNode : Node {
+	public class DialogueMessageBlockNode : Node {
 		[Input] public DialogueNode Input;
 		public string Id = Guid.NewGuid().ToString("N");
 		[Output(dynamicPortList = true)]
@@ -1036,7 +611,7 @@ namespace Bard.XNodeEditor {
 		new void OnEnable() {
 			base.OnEnable();
 			if (GetOutputPort("0") == null) {
-				AddDynamicOutput(typeof(DialogueMessagesNode), fieldName: "0", typeConstraint: TypeConstraint.Strict);
+				AddDynamicOutput(typeof(DialogueMessageBlockNode), fieldName: "0", typeConstraint: TypeConstraint.Strict);
 			}
 		}
 
@@ -1052,7 +627,7 @@ namespace Bard.XNodeEditor {
 			for (int i = 0; i < msgs.Length; i++) {
 				Messages[i] = DialogueMessageNode.FromMessage(msgs[i]);
 				if (GetOutputPort($"{i}") == null) {
-					AddDynamicOutput(typeof(DialogueMessagesNode), fieldName: $"{i}", typeConstraint: TypeConstraint.Strict);
+					AddDynamicOutput(typeof(DialogueMessageBlockNode), fieldName: $"{i}", typeConstraint: TypeConstraint.Strict);
 				}
 			}
 		}
@@ -1123,7 +698,7 @@ namespace Bard.XNodeEditor {
 			DialogueMessageSkillCheck skillCheck = null;
 			List<DialogueMessageNodeActionCustom> customActions = new();
 			Actions.CustomA.ForEach(c => {
-				if (c.Type == DialogueMessageNodeActionType.SkillCheck) {
+				if (c.Type == 5) {
 					skillCheck = c.SkillCheck;
 					// Add all check modifiers to localization cache
 					foreach (var modifier in c.SkillCheck.Modifiers) {

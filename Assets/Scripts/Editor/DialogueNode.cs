@@ -28,7 +28,7 @@ namespace Bard.XNodeEditor {
 			if (m_Target == null) {
 				m_Target = target as DialogueNode;
 				m_NpcMessages = serializedObject.FindProperty("NpcMessages");
-				m_Speaker = serializedObject.FindProperty("Speaker");
+				//m_Speaker = serializedObject.FindProperty("Speaker");
 				m_Output = m_Target.GetOutputPort("Output");
 
 				m_ListContent = new GUIContent();
@@ -59,15 +59,15 @@ namespace Bard.XNodeEditor {
 			serializedObject.UpdateIfRequiredOrScript();
 
 			NodeEditorGUILayout.PortField(target.GetInputPort(nameof(DialogueNode.Input)));
-			GUILayout.BeginHorizontal();
+			/*GUILayout.BeginHorizontal();
 			var color = GUI.contentColor;
 			if (m_Speaker.intValue != 0) {
 				GUI.contentColor = Color.yellow;
 			}
 			GUILayout.Label("Speaker Override", GUILayout.Width(120));
-//			m_Speaker.intValue = (int)(BardNPCId)EditorGUILayout.EnumPopup((BardNPCId)m_Speaker.intValue);
+			m_Speaker.intValue = (int)(BardNPCId)EditorGUILayout.EnumPopup((BardNPCId)m_Speaker.intValue);
 			GUI.contentColor = color;
-			GUILayout.EndHorizontal();
+			GUILayout.EndHorizontal();*/
 
 			m_MessagesList.DoLayoutList();
 			NodeEditorGUILayout.PortField(m_Output);
@@ -79,7 +79,7 @@ namespace Bard.XNodeEditor {
 	[NodeWidth(380)]
 	[NodeTint("#301c36")]
 	public class DialogueNode : DialogueNodeBase {
-		[Input] public DialogueMessagesNode Input;
+		[Input] public DialogueMessageBlockNode Input;
 
 //		public BardNPCId Speaker;
 
@@ -127,7 +127,7 @@ namespace Bard.XNodeEditor {
 
 			var output = GetOutputPort("Output").Connection?.node;
 			if (output == null) return tree;
-			if (output is DialogueMessagesNode messages) {
+			if (output is DialogueMessageBlockNode messages) {
 				if (DialogueGraphUtils.ExporterCachedMessages.ContainsKey(messages.Id)) {
 					DialogueGraphUtils.ExporterUsedCachedMessages.Add(messages.Id);
 					tree.MessagesID = messages.Id;

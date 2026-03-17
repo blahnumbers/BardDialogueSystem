@@ -6,7 +6,7 @@ using XNode;
 namespace Bard.XNodeEditor {
 	public class DialogueNodeBase : Node {
 		[Output(connectionType = ConnectionType.Override)]
-		public DialogueMessagesNode Output;
+		public DialogueMessageBlockNode Output;
 		[TextArea] public string[] NpcMessages = new string[1] { "" };
 		public List<string> NpcMessageIds = new() { Guid.NewGuid().ToString("N") };
 		public string Id = Guid.NewGuid().ToString("N");

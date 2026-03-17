@@ -12,7 +12,7 @@ namespace Bard.XNodeEditor {
 	[CustomNodeGraphEditor(typeof(DialogueGraph))]
 	public class DialogueGraphContextMenu : NodeGraphEditor {
 		public override void AddContextMenuItems(GenericMenu menu, Type[] types) {
-			base.AddContextMenuItems(menu, new Type[] { typeof(DialogueNodeGroup), typeof(DialogueRootNode), typeof(DialogueNode), typeof(DialogueMessagesNode) });
+			base.AddContextMenuItems(menu, new Type[] { typeof(DialogueNodeGroup), typeof(DialogueRootNode), typeof(DialogueNode), typeof(DialogueMessageBlockNode) });
 
 			menu.AddSeparator("");
 			menu.AddItem(new GUIContent("Export/This graph only"), false, () => {

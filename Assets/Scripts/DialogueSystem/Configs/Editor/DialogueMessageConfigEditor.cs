@@ -30,7 +30,7 @@ namespace Bard.Editor {
 					return ((DialogueMessageConfig)serializedObject.targetObject).Types[targetIdx].Id != 0;
 				},
 				onAddCallback = list => {
-					((DialogueMessageConfig)serializedObject.targetObject).AddNewType();
+					((DialogueMessageConfig)serializedObject.targetObject).AddType();
 					serializedObject.Update();
 				},
 				onCanAddCallback = list => ((DialogueMessageConfig)serializedObject.targetObject).NextTypeId < 1000,

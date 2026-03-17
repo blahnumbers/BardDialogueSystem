@@ -7,7 +7,7 @@ namespace Bard {
 		private int m_MaxTypeId = 1;
 		public int NextTypeId => m_MaxTypeId;
 
-		public void AddNewType() {
+		public void AddType() {
 			Types.Add(new(m_MaxTypeId));
 			m_MaxTypeId++;
 		}

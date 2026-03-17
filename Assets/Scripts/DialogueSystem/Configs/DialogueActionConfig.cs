@@ -20,7 +20,17 @@ namespace Bard {
 	public class DialogueActionConfig : ScriptableConfig {
 		[SerializeField] private List<DialogueActionConfigEntry> m_Types = new() { null };
 		public IReadOnlyList<DialogueActionConfigEntry> Types => m_Types;
-		public string[] ActionNames => Types.Select(t => t.Action.Name).ToArray();
+		public string[] m_CachedActionNames;
+		public string[] ActionNames {
+			get {
+				if (m_CachedActionNames == null) RebuildCaches();
+				return m_CachedActionNames;
+			}
+		}
+
+		public override void RebuildCaches() {
+			m_CachedActionNames = Types.Select(t => t.Action != null ? t.Action.Name : "Undefined").ToArray();
+		}
 
 		public override void Initialize(string path) {
 			AttachDefaultAction<QuestProgressAction>("Set Quest Progress", path);
@@ -35,8 +45,9 @@ namespace Bard {
 			m_Types.Add(new(m_Types.Count, action));
 		}
 
-		public DialogueAction GetById(int id) {
-			return m_Types.Find(t => t.Id == id)?.Action;
+		public bool TryGetById(int id, out DialogueAction action) {
+			action = m_Types.Find(t => t.Id == id)?.Action;
+			return action != null;
 		}
 
 		public void AddType() {

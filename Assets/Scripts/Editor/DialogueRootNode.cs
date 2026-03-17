@@ -129,7 +129,7 @@ namespace Bard.XNodeEditor {
 
 			var output = GetOutputPort("Output").Connection?.node;
 			if (output == null) return tree;
-			if (output is DialogueMessagesNode messages) {
+			if (output is DialogueMessageBlockNode messages) {
 				if (DialogueGraphUtils.ExporterCachedMessages.ContainsKey(messages.Id)) {
 					DialogueGraphUtils.ExporterUsedCachedMessages.Add(messages.Id);
 					tree.MessagesID = messages.Id;

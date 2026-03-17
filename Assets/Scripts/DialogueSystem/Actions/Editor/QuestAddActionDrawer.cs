@@ -1,6 +1,7 @@
 using UnityEditor;
 
 namespace Bard.Editor {
+	[DialogueActionDrawer(typeof(QuestAddAction))]
 	public partial class QuestAddActionDrawer : DialogueActionDrawer {
 		public override void DrawInspector(SerializedMessageAction data, MessageActionRects rects, DialogueProjectSettings prefs) {
 			EditorGUI.LabelField(rects.Label1, "Id");

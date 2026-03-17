@@ -22,7 +22,7 @@ namespace Bard.XNodeEditor {
 				return;
 			}
 			var treesLookup = new Dictionary<string, DialogueNode>();
-			var messagesLookup = new Dictionary<string, DialogueMessagesNode>();
+			var messagesLookup = new Dictionary<string, DialogueMessageBlockNode>();
 
 			FillEmptyTreeFields(tree);
 			var rootNode = CreateNodesRecursive(graph, tree, treesLookup, messagesLookup, true);
@@ -42,7 +42,7 @@ namespace Bard.XNodeEditor {
 			DialogueGraph graph,
 			DialogueTree tree,
 			Dictionary<string, DialogueNode> trees,
-			Dictionary<string, DialogueMessagesNode> messages,
+			Dictionary<string, DialogueMessageBlockNode> messages,
 			bool isRoot = false
 		) {
 			if (trees.ContainsKey(tree.SharedID)) return null;
@@ -71,7 +71,7 @@ namespace Bard.XNodeEditor {
 				}
 			}
 			else if (tree.Messages != null) {
-				var messagesNode = graph.AddNode<DialogueMessagesNode>();
+				var messagesNode = graph.AddNode<DialogueMessageBlockNode>();
 				AssetDatabase.AddObjectToAsset(messagesNode, graph);
 				messagesNode.Setup(tree.Messages, tree.SharedMessagesID);
 				messages[tree.SharedMessagesID] = messagesNode;
@@ -100,7 +100,7 @@ namespace Bard.XNodeEditor {
 
 			var port = node.GetOutputPort("Output");
 			if (port != null && port.Connection != null) {
-				var messagesNode = port.Connection.node as DialogueMessagesNode;
+				var messagesNode = port.Connection.node as DialogueMessageBlockNode;
 				if (messagesNode.position != Vector2.zero) {
 					return nextY;
 				}

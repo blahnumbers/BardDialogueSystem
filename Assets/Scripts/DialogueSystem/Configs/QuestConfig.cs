@@ -1,26 +1,37 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Bard {
-	public class QuestDefinition {
-		public int Id;
-		public string Name;
-		public string SanitizedName => GetSanitizedName();
-
-		private string GetSanitizedName() {
-			var s = Regex.Replace(Name, @"[^A-Za-z0-9_]", "");
-			return char.IsDigit(s[0]) ? "_" + s : s;
-		}
-	}
-
 	public class QuestConfig : ScriptableConfig {
-		public List<QuestDefinition> Definitions;
-		public string[] QuestNames => Definitions.Select(d => d.Name).ToArray();
+		[SerializeField] private List<QuestDefinition> m_Definitions = new() { new(0, "Undefined") };
+		public IReadOnlyList<QuestDefinition> Definitions => m_Definitions;
+		private string[] m_CachedQuestNames;
+		public string[] QuestNames {
+			get {
+				if (m_CachedQuestNames == null) RebuildCaches();
+				return m_CachedQuestNames;
+			}
+		}
+		private int m_MaxId = 1;
+
+		public override void RebuildCaches() {
+			m_CachedQuestNames = m_Definitions.Select(d => d.Name).ToArray();
+		}
+
+		public void AddDefinition() {
+			m_Definitions.Add(new(m_MaxId, ""));
+			m_MaxId++;
+		}
+
+		public void ResetDefinitionCounters() {
+			m_MaxId = 1;
+			m_Definitions.ForEach(t => m_MaxId = Mathf.Max(m_MaxId, t.Id + 1));
+			Debug.Log("Quest definition counters have been reset. Next definition Id: " + m_MaxId);
+		}
 
 		public QuestDefinition GetById(int id) {
-			return Definitions.Find(d => d.Id == id);
+			return m_Definitions.Find(d => d.Id == id);
 		}
 	}
 }
