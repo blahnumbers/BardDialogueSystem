@@ -17,3 +17,7 @@ MonoBehaviour:
     InternalName: Undefined
     EditorName: Undefined
     Enabled: 1
+  - Id: 1
+    InternalName: TestQuest
+    EditorName: Tests/Test Quest
+    Enabled: 1

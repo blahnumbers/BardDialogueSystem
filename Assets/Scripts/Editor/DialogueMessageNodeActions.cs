@@ -9,8 +9,6 @@ using UnityEngine;
 namespace Bard.XNodeEditor {
 	[CustomPropertyDrawer(typeof(DialogueMessageNodeActions))]
 	public class DialogueMessageNodeActionsDrawer : PropertyDrawer {
-		private static readonly Dictionary<string, SerializedDialogueAction> m_Cache = new();
-
 		private static readonly Texture2D m_BackgroundTexture;
 		private static readonly GUIStyle m_HasChangesStyle;
 		private static readonly GUIStyle m_DefaultStyle;
@@ -46,29 +44,6 @@ namespace Bard.XNodeEditor {
 			m_CustomRect = new(24f, EditorGUIUtility.singleLineHeight * 2 + 2f, 0, 0);
 		}
 
-		private SerializedDialogueAction GetCachedValue(SerializedProperty property) {
-			string id = property.FindPropertyRelative("Id").stringValue;
-			if (!m_Cache.TryGetValue(id, out var target)) {
-				target = new(property);
-				m_Cache.Add(id, target);
-			}
-			return target;
-		}
-
-		public static void RemoveCache(SerializedProperty property) {
-			var id = property.FindPropertyRelative("Id").stringValue;
-			if (m_Cache.TryGetValue(id, out var value)) {
-				if (value.Target != null && value.Target.CustomA != null) {
-					foreach (var action in value.Target.CustomA) {
-						if (action.SkillCheck != null) {
-							SerializedMessageSkillCheck.RemoveCache(action.SkillCheck.Id);
-						}
-					}
-				}
-				m_Cache.Remove(id);
-			}
-		}
-
 		private void SetRects(Rect position) {
 			m_BackgroundRect.x = m_FoldoutRect.x = position.x;
 			m_BackgroundRect.y = m_FoldoutRect.y = position.y;
@@ -91,7 +66,7 @@ namespace Bard.XNodeEditor {
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 			SetRects(position);
 
-			var m_Target = GetCachedValue(property);
+			var m_Target = SerializedDialogueAction.GetValue(property);
 			var valuesDefault = m_Target.IsDefault;
 			m_BackgroundRect.height = GetPropertyHeight(property, label);
 			GUI.Box(m_BackgroundRect, GUIContent.none, valuesDefault ? m_DefaultStyle : m_HasChangesStyle);
@@ -124,12 +99,14 @@ namespace Bard.XNodeEditor {
 			if (property == null) {
 				return EditorGUIUtility.singleLineHeight;
 			}
-			var m_Target = GetCachedValue(property);
-			var height = EditorGUIUtility.singleLineHeight + 2;
-			if (property.isExpanded) {
-				height += EditorGUIUtility.singleLineHeight + 2 + (m_Target.Custom.arraySize > 0 ? m_Target.CustomList.GetHeight() : 70f);
+			var action = SerializedDialogueAction.GetValue(property);
+			if (Event.current.type == EventType.Layout) {
+				action.CachedHeight = EditorGUIUtility.singleLineHeight + 2;
+				if (property.isExpanded) {
+					action.CachedHeight += EditorGUIUtility.singleLineHeight + 2 + (action.Custom.arraySize > 0 ? action.CustomList.GetHeight() : 70f);
+				}
 			}
-			return height;
+			return action.CachedHeight;
 		}
 	}
 

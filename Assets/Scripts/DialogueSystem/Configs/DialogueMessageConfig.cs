@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Bard {
@@ -7,6 +8,17 @@ namespace Bard {
 		public List<DialogueMessageType> Types = new() { default };
 		private int m_MaxTypeId = 1;
 		public int NextTypeId => m_MaxTypeId;
+		public string[] m_CachedTypeNames;
+		public string[] TypeNames {
+			get {
+				if (m_CachedTypeNames == null) RebuildCaches();
+				return m_CachedTypeNames;
+			}
+		}
+
+		public override void RebuildCaches() {
+			m_CachedTypeNames = Types.Select(t => t.Name).ToArray();
+		}
 
 		public void AddType() {
 			Types.Add(new(m_MaxTypeId));

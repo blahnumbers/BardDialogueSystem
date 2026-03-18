@@ -26,7 +26,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff96e386c0be04129a19a2c465dbdcb0, type: 3}
-  m_Name: 8f67213ae0144b85b74dbf8821f3c08f
+  m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -527.5, y: -253.5}
@@ -173,8 +173,8 @@ MonoBehaviour:
       AttitudeChange: 0
       CustomA:
       - Id: 
-        Type: 1
-        CValue: 1
+        Type: 2
+        CValue: 0
         IValue: 1
         SValue: Yonker
         SkillCheck:

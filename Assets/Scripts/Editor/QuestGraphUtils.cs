@@ -228,6 +228,8 @@ namespace Bard.XNodeEditor {
 			if (requireDefinitionInsert) {
 				var prefs = DialogueSystemPreferences.GetOrCreateSettings();
 				prefs.Quests.AddDefinitionIfMissing(questName);
+				EditorUtility.SetDirty(prefs.Quests);
+				AssetDatabase.SaveAssets();
 			}
 
 			Debug.Log("Exported quest details for " + quest.name);

@@ -8,8 +8,6 @@ using UnityEngine;
 namespace Bard.XNodeEditor {
 	[CustomPropertyDrawer(typeof(DialogueNodeRequirements))]
 	public class DialogueNodeRequirementsDrawer : PropertyDrawer {
-		private static readonly Dictionary<string, SerializedDialogueRequirement> m_Cache = new();
-
 		private static readonly Texture2D m_BackgroundTexture;
 		private static readonly GUIStyle m_HasChangesStyle;
 		private static readonly GUIStyle m_DefaultStyle;
@@ -47,22 +45,6 @@ namespace Bard.XNodeEditor {
 			m_CustomRect = new(24f, 0, 0, 18f);
 		}
 
-		private SerializedDialogueRequirement GetCachedValue(SerializedProperty property) {
-			var id = property.FindPropertyRelative("Id").stringValue;
-			if (!m_Cache.TryGetValue(id, out var target)) {
-				target = new(property);
-				m_Cache.Add(id, target);
-			}
-			return target;
-		}
-
-		public static void RemoveCache(SerializedProperty property) {
-			var id = property.FindPropertyRelative("Id").stringValue;
-			if (m_Cache.ContainsKey(id)) {
-				m_Cache.Remove(id);
-			}
-		}
-
 		private void SetRects(Rect position) {
 			m_BackgroundRect.x = m_FoldoutRect.x = position.x;
 			m_BackgroundRect.y = m_FoldoutRect.y = position.y;
@@ -81,7 +63,7 @@ namespace Bard.XNodeEditor {
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 			SetRects(position);
 
-			var target = GetCachedValue(property);
+			var target = SerializedDialogueRequirement.GetValue(property);
 			var valuesDefault = target.IsDefault;
 			m_BackgroundRect.height = GetPropertyHeight(property, label);
 			GUI.Box(m_BackgroundRect, GUIContent.none, valuesDefault ? m_DefaultStyle : m_HasChangesStyle);
@@ -138,11 +120,14 @@ namespace Bard.XNodeEditor {
 			var height = EditorGUIUtility.singleLineHeight + 2f;
 			if (property == null) return height;
 
-			var target = GetCachedValue(property);
-			if (property.isExpanded) {
-				height += EditorGUIUtility.singleLineHeight + EditorGUI.GetPropertyHeight(target.Quests) + EditorGUI.GetPropertyHeight(target.Custom) + 10f;
+			var target = SerializedDialogueRequirement.GetValue(property);
+			if (Event.current.type == EventType.Layout) {
+				if (property.isExpanded) {
+					height += EditorGUIUtility.singleLineHeight + EditorGUI.GetPropertyHeight(target.Quests) + EditorGUI.GetPropertyHeight(target.Custom) + 10f;
+				}
+				target.CachedHeight = height;
 			}
-			return height;
+			return target.CachedHeight;
 		}
 	}
 
