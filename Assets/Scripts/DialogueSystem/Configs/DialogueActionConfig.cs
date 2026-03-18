@@ -17,6 +17,7 @@ namespace Bard {
 		}
 	}
 
+	[CreateAssetMenu(menuName="Bard/Configuration/New Message Actions Config", order=11)]
 	public class DialogueActionConfig : ScriptableConfig {
 		[SerializeField] private List<DialogueActionConfigEntry> m_Types = new() { null };
 		public IReadOnlyList<DialogueActionConfigEntry> Types => m_Types;

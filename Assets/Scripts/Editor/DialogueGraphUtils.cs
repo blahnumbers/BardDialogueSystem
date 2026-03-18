@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Bard.Editor;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -9,6 +10,9 @@ using XNode;
 
 namespace Bard.XNodeEditor {
 	public static class DialogueGraphUtils {
+		public static string ExportPath => Path.Combine(DialogueSystemPreferences.GetOrCreateSettings().DataGenerationPath, "Dialogue");
+		public static string LocExportPath => Path.Combine(DialogueSystemPreferences.GetOrCreateSettings().DataGenerationPath, "Localization/en/");
+
 		public static Dictionary<string, DialogueTree> ExporterCachedDialogue = new();
 		public static Dictionary<string, DialogueTree> ExporterCachedMessages = new();
 		public static Dictionary<string, string> LocalizationCache = new();

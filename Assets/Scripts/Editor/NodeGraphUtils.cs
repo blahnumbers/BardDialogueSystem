@@ -27,7 +27,7 @@ namespace Bard.XNodeEditor {
 		}
 
 		public static string GetSelectedPath() {
-			UnityEngine.Object obj = Selection.activeObject;
+			var obj = Selection.activeObject;
 			if (obj == null) return null;
 
 			string path = AssetDatabase.GetAssetPath(obj);

@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace Bard {
+	[CreateAssetMenu(menuName="Bard/Configuration/New Quests Config", order=12)]
 	public class QuestConfig : ScriptableConfig {
 		[SerializeField] private List<QuestDefinition> m_Definitions = new() { new(0, "Undefined") };
 		public IReadOnlyList<QuestDefinition> Definitions => m_Definitions;
@@ -16,12 +17,17 @@ namespace Bard {
 		private int m_MaxId = 1;
 
 		public override void RebuildCaches() {
-			m_CachedQuestNames = m_Definitions.Select(d => d.Name).ToArray();
+			m_CachedQuestNames = m_Definitions.Where(d => d.Enabled).Select(d => d.EditorName).ToArray();
 		}
 
-		public void AddDefinition() {
-			m_Definitions.Add(new(m_MaxId, ""));
+		public void AddDefinition(string name = "") {
+			m_Definitions.Add(new(m_MaxId, name));
 			m_MaxId++;
+		}
+
+		public void AddDefinitionIfMissing(string name) {
+			if (m_Definitions.Find(d => d.InternalName == name) != null) return;
+			AddDefinition(name);
 		}
 
 		public void ResetDefinitionCounters() {

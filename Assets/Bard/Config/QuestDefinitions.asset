@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc84c688b4e8b47b3847e3d143e3c7cd, type: 3}
-  m_Name: Quests
+  m_Name: QuestDefinitions
   m_EditorClassIdentifier: 
   m_Definitions:
   - Id: 0
-    Name: Undefined
+    InternalName: Undefined
+    EditorName: Undefined
+    Enabled: 1

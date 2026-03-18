@@ -24,10 +24,14 @@ namespace Bard.Editor {
 
 			SerializedObject so = new(settings);
 
-			EditorGUILayout.Space();
-			EditorGUILayout.PropertyField(so.FindProperty("Messages"), new GUIContent("Message Types Asset"));
-			EditorGUILayout.PropertyField(so.FindProperty("MessageActions"), new GUIContent("Message Actions Asset"));
-			EditorGUILayout.PropertyField(so.FindProperty("Quests"), new GUIContent("Quest Definitions Asset"));
+			EditorGUILayout.PropertyField(so.FindProperty("DefaultAssetPath"));
+			EditorGUILayout.PropertyField(so.FindProperty("DataGenerationPath"));
+		
+			EditorGUILayout.PropertyField(so.FindProperty("Messages"), new GUIContent("Types Asset"));
+			EditorGUILayout.PropertyField(so.FindProperty("MessageActions"), new GUIContent("Actions Asset"));
+
+			EditorGUILayout.PropertyField(so.FindProperty("Quests"), new GUIContent("Definitions Asset"));
+			EditorGUILayout.PropertyField(so.FindProperty("QuestClassGenerationPath"), new GUIContent("Class Generation Path"));
 
 			so.ApplyModifiedProperties();
 		}
@@ -72,7 +76,7 @@ namespace Bard.Editor {
 			bool dirty = false;
 
 			if (settings.Messages == null) {
-				settings.Messages = CreateRegistry<DialogueMessageConfig>("Messages.asset");
+				settings.Messages = CreateRegistry<DialogueMessageConfig>("MessageTypes.asset");
 				dirty = true;
 			}
 			if (settings.MessageActions == null) {
@@ -80,7 +84,7 @@ namespace Bard.Editor {
 				dirty = true;
 			}
 			if (settings.Quests == null) {
-				settings.Quests = CreateRegistry<QuestConfig>("Quests.asset");
+				settings.Quests = CreateRegistry<QuestConfig>("QuestDefinitions.asset");
 				dirty = true;
 			}
 

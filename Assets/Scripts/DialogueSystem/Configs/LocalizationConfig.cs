@@ -9,7 +9,7 @@ namespace Bard {
 		public string ShortPath;
 	}
 
-	[CreateAssetMenu]
+	[CreateAssetMenu(menuName="Bard/Configuration/New Localization Config", order=13)]
 	public class LocalizationConfig : ScriptableObject {
 		public string BasePath;
 		public List<LocalizationLanguage> Languages;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Bard {
+	[CreateAssetMenu(menuName="Bard/Configuration/New Message Types Config", order=10)]
 	public class DialogueMessageConfig : ScriptableConfig {
 		public List<DialogueMessageType> Types = new() { default };
 		private int m_MaxTypeId = 1;

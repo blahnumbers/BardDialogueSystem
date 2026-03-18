@@ -38,10 +38,12 @@ namespace Bard.Editor {
 		}
 
 		public static QuestReflection Get(QuestDefinition definition) {
-			return Get(definition.SanitizedName);
+			return Get(definition?.InternalName);
 		}
 
 		public static QuestReflection Get(string name) {
+			if (string.IsNullOrEmpty(name)) return null;
+
 			if (m_TargetAssembly == null) {
 				foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
 					var types = assembly.GetTypes();

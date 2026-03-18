@@ -23,8 +23,8 @@ namespace Bard.XNodeEditor {
 					directories.RemoveRange(0, 3);
 					graphDirectory = string.Join('_', directories);
 				}
-				string path = $"Assets/GameAssets/GameData/Dialogue/{graphDirectory}.json";
-				string locPath = $"Assets/GameAssets/GameData/Localization/en/{graphDirectory}.json";
+				string path = Path.Combine(DialogueGraphUtils.ExportPath, $"{graphDirectory}.json");
+				string locPath = Path.Combine(DialogueGraphUtils.LocExportPath, $"{graphDirectory}.json");
 
 				DialogueGraphUtils.LocalizationCache.Clear();
 
@@ -93,8 +93,8 @@ namespace Bard.XNodeEditor {
 					graphDirectory = string.Join('_', directories);
 				}
 
-				string path = $"Assets/GameAssets/GameData/Dialogue/{graphDirectory}.json";
-				string locPath = $"Assets/GameAssets/GameData/Localization/en/{graphDirectory}.json";
+				string path = Path.Combine(DialogueGraphUtils.ExportPath, $"{graphDirectory}.json");
+				string locPath = Path.Combine(DialogueGraphUtils.LocExportPath, $"{graphDirectory}.json");
 				if (File.Exists(path)) {
 					if (!EditorUtility.DisplayDialog("Warning", "This action will rewrite all data in the specified file.\nAre you sure you want to continue?", "Continue", "Cancel")) {
 						return;
@@ -137,7 +137,7 @@ namespace Bard.XNodeEditor {
 	}
 
 	public static class DialogueGraphCreator {
-		[MenuItem("Assets/Create/Bard Game/Dialogue Graph", false, 10)]
+		[MenuItem("Assets/Create/Bard/New Dialogue Graph", false, 0)]
 		public static void CreateDialogueGraph() {
 			string selectedPath = NodeGraphUtils.GetSelectedPath();
 			if (string.IsNullOrEmpty(selectedPath)) {

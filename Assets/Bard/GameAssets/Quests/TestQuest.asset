@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2283668111658961065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c6451cb6bad94f5289f790a08d1cf23, type: 3}
+  m_Name: Quest Conditions
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 248, y: -328}
+  ports:
+    keys: []
+    values: []
+  Conditions:
+  - Description: Shows Bonker
+    GUID: c93685b4c8484c96a8f6665cb4df5a0d
+    Id: Yonker
+    ShowsNotification: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1d49e0fcac77468aa1fd213471cd76b, type: 3}
+  m_Name: TestQuest
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 5582343162266568588}
+  - {fileID: -2283668111658961065}
+  - {fileID: 3557148634962128826}
+--- !u!114 &3557148634962128826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bb5c7f13f8e24ae893ed38f2687645a, type: 3}
+  m_Name: Default State
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -200, y: -200}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 3557148634962128826}
+      _typeQualifiedName: XNode.Node, XNode, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 3557148634962128826}
+      _typeQualifiedName: Bard.XNodeEditor.QuestStepNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  Input: {fileID: 0}
+  Output: {fileID: 0}
+  Id: 1
+  Name: Default State
+  InternalHint: 
+  Description: This is the default state for the quest
+  Notification: 
+  IsFinal: 0
+--- !u!114 &5582343162266568588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a4a2aa9ed544545918c0dd7eaa7376, type: 3}
+  m_Name: Test Quest
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -200, y: -328}
+  ports:
+    keys:
+    - Conditions
+    - Steps
+    values:
+    - _fieldName: Conditions
+      _node: {fileID: 5582343162266568588}
+      _typeQualifiedName: Bard.XNodeEditor.QuestConditionsNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Steps
+      _node: {fileID: 5582343162266568588}
+      _typeQualifiedName: Bard.XNodeEditor.QuestStepNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  Conditions: {fileID: 0}
+  Steps: {fileID: 0}
+  InternalHint: 
+  Type: 0

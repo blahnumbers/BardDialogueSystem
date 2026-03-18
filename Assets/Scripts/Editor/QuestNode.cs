@@ -1,44 +1,43 @@
 using UnityEditor;
 using XNode;
 using XNodeEditor;
-/*
-[CustomNodeEditor(typeof(QuestNode))]
-public class QuestNodeEditor : NodeEditor {
-	private QuestNode m_Target;
-	private SerializedProperty m_Hint;
-	private SerializedProperty m_Type;
 
-	public override void OnCreate() {
-		m_Target = target as QuestNode;
-		m_Hint = serializedObject.FindProperty("InternalHint");
-		m_Type = serializedObject.FindProperty("Type");
+namespace Bard.XNodeEditor {
+	[CustomNodeEditor(typeof(QuestNode))]
+	public class QuestNodeEditor : NodeEditor {
+		private QuestNode m_Target;
+		private SerializedProperty m_Hint;
+		private SerializedProperty m_Type;
+
+		public override void OnCreate() {
+			m_Target = target as QuestNode;
+			m_Hint = serializedObject.FindProperty("InternalHint");
+			m_Type = serializedObject.FindProperty("Type");
+		}
+
+		public override void OnBodyGUI() {
+			serializedObject.Update();
+			
+			EditorGUILayout.PropertyField(m_Type);
+			EditorGUILayout.PropertyField(m_Hint);
+
+			serializedObject.ApplyModifiedProperties();
+		}
 	}
 
-	public override void OnBodyGUI() {
-		serializedObject.Update();
-		
-		EditorGUILayout.PropertyField(m_Type);
-		EditorGUILayout.PropertyField(m_Hint);
+	[NodeWidth(380)]
+	[DisallowMultipleNodes]
+	public class QuestNode : Node {
+		[Output] public QuestConditionsNode Conditions;
+		[Output] public QuestStepNode Steps;
 
-		serializedObject.ApplyModifiedProperties();
+		public string InternalHint;
+		public int Type;
+
+		public override object GetValue(NodePort port) => null;
+
+		public void Setup(Quest quest) {
+			name = quest.Name;
+		}
 	}
 }
-
-[NodeWidth(380)]
-[DisallowMultipleNodes]
-public class QuestNode : Node {
-	[Output] public QuestConditionsNode Conditions;
-	[Output] public QuestStepNode Steps;
-
-	public string InternalHint;
-	//public string Description;
-	public BardQuestType Type;
-
-	public override object GetValue(NodePort port) => null;
-
-	public void Setup(BardQuest quest) {
-		name = quest.Name;
-		//Description = quest.Steps[0].Description;
-	}
-}
-*/
