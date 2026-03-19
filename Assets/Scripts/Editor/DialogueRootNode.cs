@@ -123,7 +123,7 @@ namespace Bard.XNodeEditor {
 			ExportMessages(tree);
 			if (!string.IsNullOrEmpty(OverworldMsg)) {
 				tree.NpcShortMessage = OverworldMsgId;
-				DialogueGraphUtils.LocalizationCache.Add(OverworldMsgId, OverworldMsg);
+				DialogueGraphUtils.DefaultLocalization.Add(OverworldMsgId, OverworldMsg);
 			}
 			DialogueGraphUtils.ExporterCachedDialogue.Add(Id, tree);
 

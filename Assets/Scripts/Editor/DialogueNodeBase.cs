@@ -28,7 +28,7 @@ namespace Bard.XNodeEditor {
 					continue;
 				}
 				tree.NpcMessage[i - skipped] = NpcMessageIds[i];
-				DialogueGraphUtils.LocalizationCache.Add(NpcMessageIds[i], NpcMessages[i]);
+				DialogueGraphUtils.DefaultLocalization.Add(NpcMessageIds[i], NpcMessages[i]);
 			}
 			if (skipped > 0) {
 				Array.Resize(ref tree.NpcMessage, tree.NpcMessage.Length - skipped);

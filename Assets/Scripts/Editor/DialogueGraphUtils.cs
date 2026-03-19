@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Bard.Editor;
 using Newtonsoft.Json;
 using UnityEditor;
@@ -9,16 +10,34 @@ using UnityEngine;
 using XNode;
 
 namespace Bard.XNodeEditor {
+	public class DialogueGraphLocalizationCache : ILocalizationCache {
+		public DialogueGraphLocalizationCache() {
+			Caches = new() { ["Default"] = new() };;
+			var prefs = DialogueSystemPreferences.GetOrCreateSettings();
+			foreach (var file in prefs.Localization.AdditionalFiles) {
+				Caches[file] = new();
+			}
+		}
+	}
 	public static class DialogueGraphUtils {
 		public static string ExportPath => Path.Combine(DialogueSystemPreferences.GetOrCreateSettings().DataGenerationPath, "Dialogue");
 		public static string LocExportPath => Path.Combine(DialogueSystemPreferences.GetOrCreateSettings().DataGenerationPath, "Localization/en/");
 
 		public static Dictionary<string, DialogueTree> ExporterCachedDialogue = new();
 		public static Dictionary<string, DialogueTree> ExporterCachedMessages = new();
-		public static Dictionary<string, string> LocalizationCache = new();
-		public static Dictionary<string, string> LocalizationCache_SkillChecks = new();
+		public static DialogueGraphLocalizationCache Localization = new();
+		public static Dictionary<string, string> DefaultLocalization => Localization.Caches["Default"];
 		public static List<string> ExporterUsedCachedMessages = new();
 		public static List<string> ExporterUsedCachedDialogue = new();
+
+		private static PropertyInfo m_VisibleRectPInfo = null;
+		public static bool Overlaps(Rect rect) {
+			if (m_VisibleRectPInfo == null) {
+				var type = typeof(GUI).Assembly.GetType("UnityEngine.GUIClip");
+				m_VisibleRectPInfo = type.GetProperty("visibleRect", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+			}
+			return ((Rect)m_VisibleRectPInfo.GetValue(null)).Overlaps(rect);
+		}
 
 		public static void Import(DialogueTree tree, DialogueGraph graph) {
 			if (graph == null) {
@@ -188,7 +207,11 @@ namespace Bard.XNodeEditor {
 		}
 
 		public static void SaveGlobalLocalizations() {
-			SaveLocalizationSingle(LocalizationCache_SkillChecks, "Assets/GameAssets/GameData/Localization/en/SkillChecks.json");
+			var prefs = DialogueSystemPreferences.GetOrCreateSettings();
+			foreach (var defaultFile in prefs.Localization.AdditionalFiles) {
+				var path = Path.Combine(prefs.LocalizationBasePath, prefs.Localization.DefaultLanguage.ShortPath, $"{defaultFile}.json");
+				SaveLocalizationSingle(Localization.Caches[defaultFile], path);
+			}
 		}
 	}
 }

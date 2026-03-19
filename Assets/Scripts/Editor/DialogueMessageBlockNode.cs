@@ -6,7 +6,6 @@ using XNode;
 using XNodeEditor;
 using UnityEditorInternal;
 using UnityEngine.UI;
-using System.Reflection;
 
 namespace Bard.XNodeEditor {
 	[CustomNodeEditor(typeof(DialogueMessageBlockNode))]
@@ -37,26 +36,20 @@ namespace Bard.XNodeEditor {
 			List<SerializedProperty> m_SerializedMessages = new(m_Messages.arraySize);
 			void reloadMessages() {
 				m_SerializedMessages.Clear();
-				for (int i = 0; i < m_Messages.arraySize; i++)
-				{
+				for (int i = 0; i < m_Messages.arraySize; i++) {
 					m_SerializedMessages.Add(m_Messages.GetArrayElementAtIndex(i));
 				}
 			}
-			var type = typeof(GUI).Assembly.GetType("UnityEngine.GUIClip");
-			var visibleRect = type.GetProperty("visibleRect", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
 			reloadMessages();
 			m_List = new(serializedObject, m_Messages) {
-				drawHeaderCallback = rect => {
-					GUI.Label(rect, "Player Messages");
-				},
+				drawHeaderCallback = rect => GUI.Label(rect, "Player Messages"),
 				drawElementCallback = (rect, index, active, focused) => {
 					if (m_DeferredAction != null) {
 						m_DeferredAction.Invoke();
 						m_DeferredAction = null;
 					}
-					Rect visible = (Rect)visibleRect.GetValue(null);
-					if (!visible.Overlaps(rect)) return;
+					if (!DialogueGraphUtils.Overlaps(rect)) return;
 
 					GUI.Label(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), "#" + (index + 1));
 					EditorGUI.BeginProperty(rect, null, m_SerializedMessages[index]);
@@ -65,6 +58,10 @@ namespace Bard.XNodeEditor {
 					EditorGUI.EndProperty();
 				},
 				elementHeightCallback = index => {
+					if (m_DeferredAction != null) {
+						m_DeferredAction.Invoke();
+						m_DeferredAction = null;
+					}
 					return EditorGUI.GetPropertyHeight(m_SerializedMessages[index]);
 				},
 				drawElementBackgroundCallback = (rect, index, active, focused) => {
@@ -109,7 +106,7 @@ namespace Bard.XNodeEditor {
 						}
 						for (int i = 0; i < m_Target.Messages.Length; i++) {
 							var port = m_Target.AddDynamicOutput(typeof(DialogueMessageBlockNode), fieldName: $"{i}", typeConstraint: Node.TypeConstraint.Strict);
-							if (oldPorts.TryGetValue(m_Target.Messages[i].Id, out var nodePort)) {
+							if (oldPorts.TryGetValue(m_Target.Messages[i].Id, out var nodePort) && nodePort != null) {
 								port.Connect(nodePort);
 							}
 						}
@@ -182,7 +179,7 @@ namespace Bard.XNodeEditor {
 					}
 				}
 				if (nextDialogue == null || nextDialogue.GetOutputPort("Output").Connection?.node == null) {
-					messages[i].MessageType = 1000;
+					messages[i].MessageType = DialogueMessageType.EXIT;
 				}
 			}
 			return messages;

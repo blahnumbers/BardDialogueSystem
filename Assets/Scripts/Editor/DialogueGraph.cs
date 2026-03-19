@@ -26,7 +26,7 @@ namespace Bard.XNodeEditor {
 				string path = Path.Combine(DialogueGraphUtils.ExportPath, $"{graphDirectory}.json");
 				string locPath = Path.Combine(DialogueGraphUtils.LocExportPath, $"{graphDirectory}.json");
 
-				DialogueGraphUtils.LocalizationCache.Clear();
+				DialogueGraphUtils.DefaultLocalization.Clear();
 
 				var trees = new List<DialogueTree>();
 				var graphData = DialogueGraphUtils.Export((DialogueGraph)target);
@@ -42,6 +42,9 @@ namespace Bard.XNodeEditor {
 							Debug.Log("Replacing dialogue tree: " + replacement.SharedID);
 						}
 					}
+				}
+				else {
+					Directory.CreateDirectory(Path.GetDirectoryName(path));
 				}
 				graphData.ForEach(t => {
 					trees.Add(t);
@@ -61,16 +64,19 @@ namespace Bard.XNodeEditor {
 					var existingData = File.ReadAllText(locPath);
 					localization = JsonConvert.DeserializeObject<List<LocalizationString>>(existingData);
 					for (int i = 0; i < localization.Count; i++) {
-						if (DialogueGraphUtils.LocalizationCache.TryGetValue(localization[i].Id, out var str)) {
+						if (DialogueGraphUtils.DefaultLocalization.TryGetValue(localization[i].Id, out var str)) {
 							localization[i].String = str;
-							DialogueGraphUtils.LocalizationCache.Remove(localization[i].Id);
+							DialogueGraphUtils.DefaultLocalization.Remove(localization[i].Id);
 						}
 					}
 				}
-				foreach (var pair in DialogueGraphUtils.LocalizationCache) {
+				else {
+					Directory.CreateDirectory(Path.GetDirectoryName(locPath));
+				}
+				foreach (var pair in DialogueGraphUtils.DefaultLocalization) {
 					localization.Add(new() { Id = pair.Key, String = pair.Value });
 				}
-				DialogueGraphUtils.LocalizationCache.Clear();
+				DialogueGraphUtils.DefaultLocalization.Clear();
 
 				json = JsonConvert.SerializeObject(localization, new JsonSerializerSettings() {
 					NullValueHandling = NullValueHandling.Ignore,
@@ -101,7 +107,7 @@ namespace Bard.XNodeEditor {
 					}
 				}
 
-				DialogueGraphUtils.LocalizationCache.Clear();
+				DialogueGraphUtils.DefaultLocalization.Clear();
 				var trees = new List<DialogueTree>();
 				foreach (var file in Directory.GetFiles(Path.GetDirectoryName(graphPath), "*.asset")) {
 					var graph = AssetDatabase.LoadAssetAtPath(file, typeof(DialogueGraph)) as DialogueGraph;
@@ -114,8 +120,8 @@ namespace Bard.XNodeEditor {
 				});
 				File.WriteAllText(path, json);
 
-				List<LocalizationString> localization = new(DialogueGraphUtils.LocalizationCache.Count);
-				foreach (var pair in DialogueGraphUtils.LocalizationCache) {
+				List<LocalizationString> localization = new(DialogueGraphUtils.DefaultLocalization.Count);
+				foreach (var pair in DialogueGraphUtils.DefaultLocalization) {
 					localization.Add(new() { Id = pair.Key, String = pair.Value });
 				}
 				json = JsonConvert.SerializeObject(localization, new JsonSerializerSettings() {
@@ -124,7 +130,7 @@ namespace Bard.XNodeEditor {
 				});
 				File.WriteAllText(locPath, json);
 				Debug.Log($"Exported localizations to {locPath}");
-				DialogueGraphUtils.LocalizationCache.Clear();
+				DialogueGraphUtils.DefaultLocalization.Clear();
 
 				DialogueGraphUtils.SaveGlobalLocalizations();
 

@@ -33,6 +33,7 @@ namespace Bard.Editor {
 namespace Bard {
 	[Serializable]
 	public class DialogueMessageType {
+		public static int EXIT => 1000;
 		public int Id;
 		public string Name = "Default";
 

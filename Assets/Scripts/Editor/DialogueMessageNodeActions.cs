@@ -110,7 +110,7 @@ namespace Bard.XNodeEditor {
 		}
 	}
 
-	[CustomPropertyDrawer(typeof(DialogueMessageNodeActionCustom))]
+	[CustomPropertyDrawer(typeof(DialogueMessageNodeAction))]
 	public class DialogueMessageNodeActionCustomDrawer : PropertyDrawer {
 		private static readonly DialogueProjectSettings m_Prefs;
 		private static DialogueActionConfig ActionsConfig => m_Prefs.MessageActions;
@@ -124,16 +124,17 @@ namespace Bard.XNodeEditor {
 		}
 
 		private void SetRects(Rect position) {
-			m_BaseRect.x = m_Rects.Label1.x = m_Rects.Label2.x = position.x;
+			m_BaseRect.x = m_Rects.Initial.x = m_Rects.Label1.x = m_Rects.Label2.x = position.x;
 			m_BaseRect.y = position.y;
-			m_BaseRect.width = position.width;
+			m_BaseRect.width = m_Rects.Initial.width = position.width;
 
-			m_Rects.Label1.y = m_Rects.Input1.y = m_Rects.Label2.y = m_Rects.Input2.y = m_BaseRect.y + m_BaseRect.height + 2;
-			m_Rects.Label1.width = m_Rects.Label2.width = position.width / 3 - 4;
-			m_Rects.Input1.width = m_Rects.Input2.width = position.width - m_Rects.Label1.width - 4;
+			m_Rects.Initial.y = m_Rects.Label1.y = m_Rects.Input1.y = m_Rects.Label2.y = m_Rects.Input2.y = m_BaseRect.y + m_BaseRect.height + 2f;
+			m_Rects.Label1.width = m_Rects.Label2.width = position.width * 0.33f - 4f;
+			m_Rects.Input1.width = m_Rects.Input2.width = position.width - m_Rects.Label1.width - 4f;
 
-			m_Rects.Input1.x = m_Rects.Input2.x = m_Rects.Label1.x + m_Rects.Label1.width + 4;
+			m_Rects.Input1.x = m_Rects.Input2.x = m_Rects.Label1.x + m_Rects.Label1.width + 4f;
 
+			m_Rects.Initial.height = position.height - m_Rects.Initial.y;
 			m_BaseRect.height = m_Rects.Label1.height = m_Rects.Input1.height = m_Rects.Label2.height = m_Rects.Input2.height = EditorGUIUtility.singleLineHeight;
 		}
 
@@ -164,40 +165,28 @@ namespace Bard.XNodeEditor {
 	}
 
 	[Serializable]
-	public class DialogueMessageNodeActionCustom {
+	public class DialogueMessageNodeAction : DialogueMessageActionBase {
 		public string Id = Guid.NewGuid().ToString("N");
-		public int Type = 0;
-		public int CValue = 0;
-		public int IValue = 0;
-		public string SValue = string.Empty;
-		public DialogueMessageSkillCheck SkillCheck = new() { Complexity = 10 };
 		public bool IsValid => Type != 0;
 
-		public DialogueMessageNodeActionCustom(string input) =>
-			throw new NotImplementedException($"DialogueMessageNodeActionCustom construction from string is not yet implemented");
+		public DialogueMessageNodeAction() { }
 
-		/*public override string ToString() {
-			return Type switch {
-				DialogueMessageNodeActionType.QuestProgress => "ProgressQuest:" + QuestId.ToString() + ":" + IValue,
-				DialogueMessageNodeActionType.QuestCondition => "AddCondition:" + QuestId.ToString() + ":" + SValue,
-				DialogueMessageNodeActionType.QuestAdd => "AddQuest:" + QuestId.ToString(),
-				DialogueMessageNodeActionType.PlayCinematic => "PlayCinematic:" + CinematicId.ToString(),
-				DialogueMessageNodeActionType.PlayLute => "PlayLute:" + SValue,
-				DialogueMessageNodeActionType.AttitudeChange => "AttitudeChange:" + SValue + ":" + IValue,
-				DialogueMessageNodeActionType.BalanceChange => "UpdateBalance:" + IValue,
-				DialogueMessageNodeActionType.HungerChange => "UpdateHunger:" + IValue,
-				DialogueMessageNodeActionType.NameChange => "NameChange:" + SValue + ":" + IValue,
-				DialogueMessageNodeActionType.HideInteractable => "Hide:" + SValue,
-				DialogueMessageNodeActionType.ShowInteractable => "Show:" + SValue,
-				_ => "",
-			};
-		}*/
+		public DialogueMessageNodeAction(string input) =>
+			throw new NotImplementedException($"DialogueMessageNodeAction construction from string is not yet implemented");
+
+		public override string ToString() {
+			var actions = DialogueSystemPreferences.GetOrCreateSettings().MessageActions;
+			if (actions.TryGetById(Type, out var action)) {
+				return action.ToString();
+			}
+			return "";
+		}
 	}
 
 	[Serializable]
 	public class DialogueMessageNodeActions {
 		public string Id = Guid.NewGuid().ToString("N");
 		public int AttitudeChange = 0;
-		public List<DialogueMessageNodeActionCustom> CustomA = new();
+		public List<DialogueMessageNodeAction> Custom = new();
 	}
 }

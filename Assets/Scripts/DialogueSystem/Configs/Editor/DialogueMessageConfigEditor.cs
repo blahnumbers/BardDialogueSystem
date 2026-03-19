@@ -33,7 +33,7 @@ namespace Bard.Editor {
 					((DialogueMessageConfig)serializedObject.targetObject).AddType();
 					serializedObject.Update();
 				},
-				onCanAddCallback = list => ((DialogueMessageConfig)serializedObject.targetObject).NextTypeId < 1000,
+				onCanAddCallback = list => ((DialogueMessageConfig)serializedObject.targetObject).NextTypeId < DialogueMessageType.EXIT,
 				onRemoveCallback = list => {
 					m_Types.DeleteArrayElementAtIndex(list.selectedIndices.Count > 0 ? list.selectedIndices[0] : list.count - 1);
 				}

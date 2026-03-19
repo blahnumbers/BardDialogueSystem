@@ -33,6 +33,8 @@ namespace Bard.Editor {
 			EditorGUILayout.PropertyField(so.FindProperty("Quests"), new GUIContent("Definitions Asset"));
 			EditorGUILayout.PropertyField(so.FindProperty("QuestClassGenerationPath"), new GUIContent("Class Generation Path"));
 
+			EditorGUILayout.PropertyField(so.FindProperty("Characters"), new GUIContent("Characters Asset"));
+
 			so.ApplyModifiedProperties();
 		}
 
@@ -85,6 +87,14 @@ namespace Bard.Editor {
 			}
 			if (settings.Quests == null) {
 				settings.Quests = CreateRegistry<QuestConfig>("QuestDefinitions.asset");
+				dirty = true;
+			}
+			if (settings.Characters == null) {
+				settings.Characters = CreateRegistry<CharacterConfig>("CharacterDefinitions.asset");
+				dirty = true;
+			}
+			if (settings.Localization == null) {
+				settings.Localization = CreateRegistry<LocalizationConfig>("Localization.asset");
 				dirty = true;
 			}
 

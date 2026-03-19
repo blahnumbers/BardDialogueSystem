@@ -120,7 +120,7 @@ namespace Bard.XNodeEditor {
 				Type = msg.MessageType,
 				Actions = new DialogueMessageNodeActions() {
 					AttitudeChange = msg.AttitudeChange,
-					CustomA = new()
+					Custom = new()
 				},
 				Requirements = new DialogueNodeRequirements() {
 					Quests = msg.Requirements,
@@ -130,7 +130,7 @@ namespace Bard.XNodeEditor {
 			};
 			if (msg.MessageAction != null) {
 				foreach (var action in msg.MessageAction.Split(';')) {
-					node.Actions.CustomA.Add(new(action));
+					node.Actions.Custom.Add(new(action));
 				}
 			}
 			return node;
@@ -138,27 +138,14 @@ namespace Bard.XNodeEditor {
 
 		public DialogueMessage Export() {
 			Requirements.Custom.RemoveAll(c => string.IsNullOrEmpty(c));
-			Actions.CustomA.RemoveAll(c => !c.IsValid);
+			Actions.Custom.RemoveAll(c => !c.IsValid);
 
+			var actionPrefs = DialogueSystemPreferences.GetOrCreateSettings().MessageActions;
 			if (!string.IsNullOrEmpty(Message)) {
-				DialogueGraphUtils.LocalizationCache.Add(Id, Message);
+				DialogueGraphUtils.DefaultLocalization.Add(Id, Message);
 			}
-			DialogueMessageSkillCheck skillCheck = null;
-			List<DialogueMessageNodeActionCustom> customActions = new();
-			Actions.CustomA.ForEach(c => {
-				if (c.Type == 5) {
-					skillCheck = c.SkillCheck;
-					// Add all check modifiers to localization cache
-					foreach (var modifier in c.SkillCheck.Modifiers) {
-						DialogueGraphUtils.LocalizationCache_SkillChecks.Add(modifier.Id, modifier.Message);
-					}
-				}
-				else {
-					customActions.Add(c);
-				}
-			});
 
-			return new() {
+			DialogueMessage exportedMessage = new() {
 				Id = Id,
 				IsOneOff = IsOneOff,
 				PlayerMessage = Message,
@@ -167,10 +154,17 @@ namespace Bard.XNodeEditor {
 				MinAttitude = Requirements.Attitude.x,
 				MaxAttitude = Requirements.Attitude.y,
 				CustomRequirements = string.Join(';', Requirements.Custom),
-				AttitudeChange = Actions.AttitudeChange,
-				MessageAction = string.Join(';', customActions),
-				MessageSkillCheck = skillCheck?.ToString()
+				AttitudeChange = Actions.AttitudeChange
 			};
+
+			List<DialogueMessageNodeAction> customActions = new();
+			Actions.Custom.ForEach(c => {
+				if (!actionPrefs.TryGetById(c.Type, out var action) || !action.ExportCustom(c, exportedMessage, DialogueGraphUtils.Localization)) {
+					customActions.Add(c);
+				}
+			});
+
+			return exportedMessage;
 		}
 	}
 }

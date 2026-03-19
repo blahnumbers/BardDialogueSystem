@@ -1,5 +1,209 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5748157594930024213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77b904e3dc274c44af9927716585b38, type: 3}
+  m_Name: Success!
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1656, y: 216}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -5748157594930024213}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: 0
+        node: {fileID: 5216061007904464141}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -5748157594930024213}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 8354361562313498277}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Output: {fileID: 0}
+  NpcMessages:
+  - Success!
+  NpcMessageIds:
+  - f0e1520f2e5142a0956cb45f89c1d188
+  Id: b25e234e8f1541669c37c6a9f7506ca2
+  Input: {fileID: 0}
+  Speaker: 0
+--- !u!114 &-3498071549136064898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77b904e3dc274c44af9927716585b38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 792, y: 216}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -3498071549136064898}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: 2
+        node: {fileID: 8354361562313498277}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -3498071549136064898}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 5216061007904464141}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Output: {fileID: 0}
+  NpcMessages:
+  - 
+  NpcMessageIds:
+  - 0b2fad4ac17e4a03af77b6ddee534480
+  Id: a761613c55414b9b91026491bcc8d81b
+  Input: {fileID: 0}
+  Speaker: 0
+--- !u!114 &-3289607706622269707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77b904e3dc274c44af9927716585b38, type: 3}
+  m_Name: Failure :(
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1656, y: 440}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -3289607706622269707}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: 1
+        node: {fileID: 5216061007904464141}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -3289607706622269707}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 8354361562313498277}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Output: {fileID: 0}
+  NpcMessages:
+  - Failure :(
+  NpcMessageIds:
+  - 017380373b3a499195a5e5b42d8d52c2
+  Id: 374f6cb5119745149b1f3a90fc894077
+  Input: {fileID: 0}
+  Speaker: 0
+--- !u!114 &-792430244279017397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77b904e3dc274c44af9927716585b38, type: 3}
+  m_Name: Kabonk!
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 792, y: -8}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -792430244279017397}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: 1
+        node: {fileID: 8354361562313498277}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -792430244279017397}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 8354361562313498277}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Output: {fileID: 0}
+  NpcMessages:
+  - Kabonk!
+  NpcMessageIds:
+  - 2278cd96950149a98c6fe3ea1c11f156
+  Id: f3d145e0d02247418e483c65f1c0d432
+  Input: {fileID: 0}
+  Speaker: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16,6 +220,12 @@ MonoBehaviour:
   - {fileID: 684701918469072944}
   - {fileID: 7347136043768709548}
   - {fileID: 8354361562313498277}
+  - {fileID: 9216499691923650551}
+  - {fileID: -792430244279017397}
+  - {fileID: -3498071549136064898}
+  - {fileID: 5216061007904464141}
+  - {fileID: -5748157594930024213}
+  - {fileID: -3289607706622269707}
 --- !u!114 &684701918469072944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26,7 +236,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff96e386c0be04129a19a2c465dbdcb0, type: 3}
-  m_Name: 
+  m_Name: 8f67213ae0144b85b74dbf8821f3c08f
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -527.5, y: -253.5}
@@ -48,7 +258,7 @@ MonoBehaviour:
       _dynamic: 0
   Output: {fileID: 0}
   NpcMessages:
-  - 
+  - And this is the main message!
   NpcMessageIds:
   - a6b1295ca7bd489bbfe7be4be9067483
   Id: 8f67213ae0144b85b74dbf8821f3c08f
@@ -57,8 +267,103 @@ MonoBehaviour:
     Quests: []
     Attitude: {x: -2147483648, y: 2147483647}
     Custom: []
-  OverworldMsg: 
+  OverworldMsg: Hi! This is a test overworld message
   OverworldMsgId: 39e66e89acf8497f963930f1576eb942
+--- !u!114 &5216061007904464141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0df11cff9de34425f917f8f1233ab0d2, type: 3}
+  m_Name: Dialogue Message Block
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1224, y: 216}
+  ports:
+    keys:
+    - Input
+    - Messages
+    - 0
+    - 1
+    values:
+    - _fieldName: Input
+      _node: {fileID: 5216061007904464141}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: -3498071549136064898}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Messages
+      _node: {fileID: 5216061007904464141}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageNode[], Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: 0
+      _node: {fileID: 5216061007904464141}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -5748157594930024213}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: 1
+      _node: {fileID: 5216061007904464141}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -3289607706622269707}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+  Input: {fileID: 0}
+  Id: 353b6b995aeb428fa93998a94ac87eb7
+  Messages:
+  - IsOneOff: 0
+    Requirements:
+      Id: 233ee9cfd34a4dd498c33d45a6cb610d
+      Quests: []
+      Attitude: {x: -2147483648, y: 2147483647}
+      Custom: []
+    Actions:
+      Id: 1775623717ed46ca98c9f3e981cee1be
+      AttitudeChange: 0
+      Custom: []
+    Message: 
+    Type: 3
+    Id: f78daa4af7744cf5a32707512b414496
+  - IsOneOff: 0
+    Requirements:
+      Id: 6e798a2875aa4d1d9313251ef0a8e556
+      Quests: []
+      Attitude: {x: -2147483648, y: 2147483647}
+      Custom: []
+    Actions:
+      Id: d82b129864344a89b384b701fa2cd294
+      AttitudeChange: 0
+      Custom: []
+    Message: 
+    Type: 4
+    Id: 981e25e18c274492a9de65e456100db4
 --- !u!114 &7347136043768709548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +374,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f77b904e3dc274c44af9927716585b38, type: 3}
-  m_Name: Dialogue
+  m_Name: '[ TestCharacter ] This is a follow-up...'
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -88, y: -248}
@@ -104,11 +409,15 @@ MonoBehaviour:
       _dynamic: 0
   Output: {fileID: 0}
   NpcMessages:
-  - 
+  - This is a follow-up message by another character
+  - And another one!
   NpcMessageIds:
   - e075504f78434946b121b99ba723a060
+  - de9559b3d2944eccb3cd22e3607abfc2
+  - c345183350bb47afb4ca6914d95c86a6
   Id: bc53f72feefd42578d69f43cac0ac495
   Input: {fileID: 0}
+  Speaker: 1
 --- !u!114 &8354361562313498277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,7 +436,10 @@ MonoBehaviour:
     keys:
     - Input
     - Messages
+    - 1
+    - 2
     - 0
+    - 3
     values:
     - _fieldName: Input
       _node: {fileID: 8354361562313498277}
@@ -136,6 +448,18 @@ MonoBehaviour:
       connections:
       - fieldName: Output
         node: {fileID: 7347136043768709548}
+        reroutePoints: []
+      - fieldName: Output
+        node: {fileID: -792430244279017397}
+        reroutePoints: []
+      - fieldName: Output
+        node: {fileID: 9216499691923650551}
+        reroutePoints: []
+      - fieldName: Output
+        node: {fileID: -5748157594930024213}
+        reroutePoints: []
+      - fieldName: Output
+        node: {fileID: -3289607706622269707}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -150,7 +474,43 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: 1
+      _node: {fileID: 8354361562313498277}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -792430244279017397}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: 2
+      _node: {fileID: 8354361562313498277}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -3498071549136064898}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
     - _fieldName: 0
+      _node: {fileID: 8354361562313498277}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 9216499691923650551}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 2
+      _dynamic: 1
+    - _fieldName: 3
       _node: {fileID: 8354361562313498277}
       _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -164,6 +524,32 @@ MonoBehaviour:
   Messages:
   - IsOneOff: 0
     Requirements:
+      Id: 9f22e20e2c7c4355bae35c197e55458c
+      Quests: []
+      Attitude: {x: -2147483648, y: 2147483647}
+      Custom: []
+    Actions:
+      Id: b0b0234e9f304b1c8ed23beefe16e894
+      AttitudeChange: 0
+      Custom: []
+    Message: This is a regular message
+    Type: 0
+    Id: 5f3290ad8aa14bd798e3bbe651038fa3
+  - IsOneOff: 1
+    Requirements:
+      Id: a2c58473a69b40b2b318936906a85839
+      Quests: []
+      Attitude: {x: -2147483648, y: 2147483647}
+      Custom: []
+    Actions:
+      Id: 3418a0dbd33e446f95508c10987a4b98
+      AttitudeChange: 0
+      Custom: []
+    Message: This is a secondary message
+    Type: 1
+    Id: c7961f69866141d498f5327a3a503ad8
+  - IsOneOff: 0
+    Requirements:
       Id: 67add310896442e18cf00ad3edd7a05c
       Quests: []
       Attitude: {x: -2147483648, y: 2147483647}
@@ -171,18 +557,80 @@ MonoBehaviour:
     Actions:
       Id: 2824313b17a846a2a88beffa017ea395
       AttitudeChange: 0
-      CustomA:
-      - Id: 
-        Type: 2
+      Custom:
+      - Type: 4
         CValue: 0
-        IValue: 1
-        SValue: Yonker
+        IValue: 0
+        SValue: 
         SkillCheck:
-          Id: 82bbee88f2ad43bfafc15198ed519cc3
+          Id: 9ba513948d0a4f04a899534d9c5aaad0
           Modifiers: []
-          Complexity: 0
-    Message: 
-    Type:
-      Id: 0
-      Name: 
+          Complexity: 10
+        Id: 7f196bf671ec4c4fb4628dec6e70310c
+    Message: This is a skill check
+    Type: 2
     Id: 40c5ebfa0c4f4b23bde53ac3b873c05a
+  - IsOneOff: 0
+    Requirements:
+      Id: ed62ea546c064bcca36a530ca5060c5c
+      Quests: []
+      Attitude: {x: -2147483648, y: 2147483647}
+      Custom: []
+    Actions:
+      Id: 6b729db9adc14302aeac78e272f38dd6
+      AttitudeChange: 0
+      Custom: []
+    Message: This is an exit message
+    Type: 0
+    Id: a9289a1b92484242a031e7b88c7c6ddd
+--- !u!114 &9216499691923650551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77b904e3dc274c44af9927716585b38, type: 3}
+  m_Name: Badonk!
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 792, y: -248}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 9216499691923650551}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: 0
+        node: {fileID: 8354361562313498277}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 9216499691923650551}
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 8354361562313498277}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Output: {fileID: 0}
+  NpcMessages:
+  - Badonk!
+  NpcMessageIds:
+  - 2e82b51d1e974ecdb31c82c15f07b20b
+  Id: c52e7e2e48d24955a2a0c71f63bce737
+  Input: {fileID: 0}
+  Speaker: 0

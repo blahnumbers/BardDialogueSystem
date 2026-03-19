@@ -4,16 +4,18 @@ using UnityEngine;
 
 namespace Bard.Editor {
 	public struct MessageActionRects {
+		public Rect Initial;
 		public Rect Label1;
 		public Rect Input1;
 		public Rect Label2;
 		public Rect Input2;
 
 		public MessageActionRects(float height) {
-			Label1 = new(0, height, 0, height);
-			Input1 = new(0, height, 0, height);
-			Label2 = new(0, height, 0, height);
-			Input2 = new(0, height, 0, height);
+			Initial = new(0, 0, 0, height);
+			Label1 = new(0, 0, 0, height);
+			Input1 = new(0, 0, 0, height);
+			Label2 = new(0, 0, 0, height);
+			Input2 = new(0, 0, 0, height);
 		}
 	}
 

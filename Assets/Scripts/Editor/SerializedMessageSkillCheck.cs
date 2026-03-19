@@ -17,7 +17,7 @@ namespace Bard.XNodeEditor {
 			// There must a better way to do it... right?
 			var messageNode = property.serializedObject.targetObject as DialogueMessageBlockNode;
 			foreach (var message in messageNode.Messages) {
-				foreach (var action in message.Actions.CustomA) {
+				foreach (var action in message.Actions.Custom) {
 					if (action.SkillCheck.Id == id) {
 						Target = action.SkillCheck;
 						break;

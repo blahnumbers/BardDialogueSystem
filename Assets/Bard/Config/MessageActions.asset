@@ -1,6 +1,23 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2446243472448784989
+--- !u!114 &-8819062616974082326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6091cafcd939348288d986149d8fb33f, type: 3}
+  m_Name: Skill Check
+  m_EditorClassIdentifier: 
+  SkillCheck:
+    Id: 1182614d1c804c46ab732aa98567c470
+    Modifiers: []
+    Complexity: 0
+  _Name: Skill Check
+--- !u!114 &-1736613394859741763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -31,12 +48,23 @@ MonoBehaviour:
   - Id: 0
     Action: {fileID: 0}
   - Id: 1
-    Action: {fileID: -2446243472448784989}
+    Action: {fileID: -1736613394859741763}
   - Id: 2
-    Action: {fileID: 8147122041665840591}
+    Action: {fileID: 1284466209421452782}
   - Id: 3
-    Action: {fileID: 5603371310544675545}
---- !u!114 &5603371310544675545
+    Action: {fileID: 5511092270951934303}
+  - Id: 4
+    Action: {fileID: -8819062616974082326}
+  - Id: 5
+    Action: {fileID: 995207410385164747}
+  m_CachedActionNames:
+  - Undefined
+  - Quests/Progress Quest
+  - Quests/Set Condition
+  - Quests/Add Quest
+  - Skill Check
+  - NPCs/Attitude Change
+--- !u!114 &995207410385164747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,12 +73,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d193a419ebe642929d4ef5d23a8b629, type: 3}
-  m_Name: Add Quest
+  m_Script: {fileID: 11500000, guid: b55e2c6cb17c24eb49bf7391510e6f2e, type: 3}
+  m_Name: Attitude Change
   m_EditorClassIdentifier: 
-  Id: 0
-  _Name: Quests/Add Quest
---- !u!114 &8147122041665840591
+  NpcId: 0
+  Value: 0
+  _Name: NPCs/Attitude Change
+--- !u!114 &1284466209421452782
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,3 +94,17 @@ MonoBehaviour:
   Id: 0
   Condition: 
   _Name: Quests/Set Condition
+--- !u!114 &5511092270951934303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d193a419ebe642929d4ef5d23a8b629, type: 3}
+  m_Name: Add Quest
+  m_EditorClassIdentifier: 
+  Id: 0
+  _Name: Quests/Add Quest

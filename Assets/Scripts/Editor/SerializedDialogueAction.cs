@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Bard.Editor;
 using UnityEditor;
 using UnityEditorInternal;
 
@@ -10,6 +11,8 @@ namespace Bard.XNodeEditor {
 		public SerializedProperty Attitude;
 		public SerializedProperty Custom;
 		public ReorderableList CustomList;
+		private readonly List<SerializedProperty> m_CustomListElements = new();
+		private bool m_CustomListDirty = true;
 		public float CachedHeight = 0f;
 
 		public bool IsAttitudeDefault => Attitude.intValue == 0;
@@ -27,7 +30,7 @@ namespace Bard.XNodeEditor {
 		public SerializedDialogueAction(SerializedProperty prop) {
 			Property = prop;
 			Attitude = prop.FindPropertyRelative("AttitudeChange");
-			Custom = prop.FindPropertyRelative("CustomA");
+			Custom = prop.FindPropertyRelative("Custom");
 			
 			Custom.isExpanded = !IsCustomDefault;
 			Property.isExpanded = !IsDefault;
@@ -46,20 +49,36 @@ namespace Bard.XNodeEditor {
 					EditorGUI.LabelField(rect, $"{Custom.arraySize} action(s)");
 				},
 				drawElementCallback = (rect, index, active, focused) => {
-					EditorGUI.PropertyField(rect, Custom.GetArrayElementAtIndex(index));
+					if (!DialogueGraphUtils.Overlaps(rect)) return;
+
+					ReloadCachedListIfNeeded();
+					EditorGUI.PropertyField(rect, m_CustomListElements[index]);
 				},
 				elementHeightCallback = index => {
-					return EditorGUI.GetPropertyHeight(Custom.GetArrayElementAtIndex(index));
+					ReloadCachedListIfNeeded();
+					return EditorGUI.GetPropertyHeight(m_CustomListElements[index]);
 				},
 				onAddCallback = list => {
-					Target.CustomA.Add(default);
+					Target.Custom.Add(default);
 					prop.serializedObject.Update();
+					m_CustomListDirty = true;
 				},
 				onRemoveCallback = list => {
-					Target.CustomA.RemoveAt(list.selectedIndices.Count > 0 ? list.selectedIndices[0] : 0);
+					Target.Custom.RemoveAt(list.selectedIndices.Count > 0 ? list.selectedIndices[0] : 0);
 					prop.serializedObject.Update();
+					m_CustomListDirty = true;
 				}
 			};
+		}
+
+		private void ReloadCachedListIfNeeded() {
+			if (!m_CustomListDirty) return;
+
+			m_CustomListElements.Clear();
+			for (int i = 0; i < Custom.arraySize; i++) {
+				m_CustomListElements.Add(Custom.GetArrayElementAtIndex(i));
+			}
+			m_CustomListDirty = false;
 		}
 
 
@@ -75,11 +94,12 @@ namespace Bard.XNodeEditor {
 		public static void RemoveCache(SerializedProperty property) {
 			var id = property.FindPropertyRelative("Id").stringValue;
 			if (m_Cache.TryGetValue(id, out var value)) {
-				if (value.Target != null && value.Target.CustomA != null) {
-					foreach (var action in value.Target.CustomA) {
+				if (value.Target != null && value.Target.Custom != null) {
+					foreach (var action in value.Target.Custom) {
 						if (action.SkillCheck != null) {
 							SerializedMessageSkillCheck.RemoveCache(action.SkillCheck.Id);
 						}
+						SerializedMessageAction.Remove(action.Id);
 					}
 				}
 				m_Cache.Remove(id);

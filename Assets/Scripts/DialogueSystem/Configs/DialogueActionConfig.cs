@@ -37,6 +37,8 @@ namespace Bard {
 			AttachDefaultAction<QuestProgressAction>("Set Quest Progress", path);
 			AttachDefaultAction<QuestConditionAction>("Set Quest Condition", path);
 			AttachDefaultAction<QuestAddAction>("Add Quest", path);
+			AttachDefaultAction<SkillCheckAction>("Skill Check", path);
+			AttachDefaultAction<AttitudeChangeAction>("Attitude Change", path);
 		}
 
 		private void AttachDefaultAction<T>(string name, string path) where T : DialogueAction {

@@ -18,16 +18,26 @@ MonoBehaviour:
   - Id: 1
     Name: Secondary
   - Id: 2
-    Name: Skill Check (Control)
+    Name: Skill Check/Control
   - Id: 3
-    Name: Skill Check (Success)
+    Name: Skill Check/Success
   - Id: 4
-    Name: Skill Check (Failure)
+    Name: Skill Check/Failure
   - Id: 5
-    Name: Devil Boon (Soul Sight)
+    Name: Devil Boon/Soul Sight
   - Id: 6
-    Name: Devil Boon (Infernal Coin)
+    Name: Devil Boon/Infernal Coin
   - Id: 7
-    Name: Devil Boon (Demonic Charm)
+    Name: Devil Boon/Demonic Charm
   - Id: 8
-    Name: Play Lute
+    Name: Special/Play Lute
+  m_CachedTypeNames:
+  - Default
+  - Secondary
+  - Skill Check/Control
+  - Skill Check/Success
+  - Skill Check/Failure
+  - Devil Boon/Soul Sight
+  - Devil Boon/Infernal Coin
+  - Devil Boon/Demonic Charm
+  - Special/Play Lute

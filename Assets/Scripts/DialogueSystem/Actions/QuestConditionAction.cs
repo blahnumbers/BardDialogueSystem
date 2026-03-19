@@ -7,6 +7,8 @@ namespace Bard {
 		public string Condition;
 		[SerializeField] private string _Name = "Quests/Set Condition";
 		public override string Name => _Name;
+		public override string ActionString => "AddCondition";
+		public override string ToString() => $"{ActionString}:{Id}:{Condition}";
 		public override void Execute(DialogueMessage context, Action<DialogueAction, DialogueMessage> executor) {
 			executor?.Invoke(this, context);
 		}
