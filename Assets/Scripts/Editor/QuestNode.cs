@@ -1,3 +1,5 @@
+using System.Linq;
+using Bard.Editor;
 using UnityEditor;
 using XNode;
 using XNodeEditor;
@@ -18,7 +20,8 @@ namespace Bard.XNodeEditor {
 		public override void OnBodyGUI() {
 			serializedObject.Update();
 			
-			EditorGUILayout.PropertyField(m_Type);
+			var qPrefs = DialogueSystemPreferences.GetOrCreateSettings().Quests;
+			m_Type.intValue = EditorGUILayout.Popup("Quest Type", m_Type.intValue, qPrefs.QuestTypes);
 			EditorGUILayout.PropertyField(m_Hint);
 
 			serializedObject.ApplyModifiedProperties();

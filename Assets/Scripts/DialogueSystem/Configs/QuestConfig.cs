@@ -5,6 +5,15 @@ using UnityEngine;
 namespace Bard {
 	[CreateAssetMenu(menuName="Bard/Configuration/New Quests Config", order=12)]
 	public class QuestConfig : ScriptableConfig {
+		[SerializeField] private List<QuestTypeDefinition> m_Types = new() { new(0, "Default") };
+		public IReadOnlyList<QuestTypeDefinition> Types => m_Types;
+		private string[] m_CachedQuestTypes;
+		public string[] QuestTypes {
+			get {
+				if (m_CachedQuestTypes == null) RebuildCaches();
+				return m_CachedQuestTypes;
+			}
+		}
 		[SerializeField] private List<QuestDefinition> m_Definitions = new() { new(0, "Undefined") };
 		public IReadOnlyList<QuestDefinition> Definitions => m_Definitions;
 		private string[] m_CachedQuestNames;
@@ -15,9 +24,16 @@ namespace Bard {
 			}
 		}
 		private int m_MaxId = 1;
+		private int m_MaxTypeId = 1;
 
 		public override void RebuildCaches() {
 			m_CachedQuestNames = m_Definitions.Where(d => d.Enabled).Select(d => d.EditorName).ToArray();
+			m_CachedQuestTypes = m_Types.Select(t => t.EditorName).ToArray();
+		}
+
+		public void AddType(string name = "") {
+			m_Types.Add(new(m_MaxTypeId, name));
+			m_MaxTypeId++;
 		}
 
 		public void AddDefinition(string name = "") {
