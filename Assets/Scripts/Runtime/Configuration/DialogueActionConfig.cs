@@ -39,6 +39,7 @@ namespace Bard.Configuration {
 
 			EditorApplication.delayCall += () => {
 				if (m_Initialized) return;
+
 				var path = AssetDatabase.GetAssetPath(this);
 				AttachDefaultAction<QuestProgressAction>("Set Quest Progress", path);
 				AttachDefaultAction<QuestConditionAction>("Set Quest Condition", path);
@@ -46,10 +47,10 @@ namespace Bard.Configuration {
 				AttachDefaultAction<SkillCheckAction>("Skill Check", path);
 				AttachDefaultAction<AttitudeChangeAction>("Attitude Change", path);
 
+				base.Initialize();
+
 				EditorUtility.SetDirty(this);
 				AssetDatabase.SaveAssets();
-
-				base.Initialize();
 			};
 			return false;
 		}

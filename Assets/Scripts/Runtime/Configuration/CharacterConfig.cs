@@ -28,8 +28,12 @@ namespace Bard.Configuration {
 
 			EditorApplication.delayCall += () => {
 				if (m_Initialized) return;
+
 				AddDefinition("Undefined");
 				base.Initialize();
+
+				EditorUtility.SetDirty(this);
+				AssetDatabase.SaveAssets();
 			};
 			return false;
 		}

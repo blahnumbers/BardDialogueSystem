@@ -3,7 +3,7 @@
   "displayName": "Bard Dialogue System",
   "author": { "name": "Blahnumbers", "url": "https://github.com/blahnumbers" },
   "description": "Customizable dialogue and quests system with visual editors based on xNode.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "unity": "6000.0",
   "license": "MIT",
   "dependencies": {
