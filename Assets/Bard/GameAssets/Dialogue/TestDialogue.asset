@@ -21,7 +21,7 @@ MonoBehaviour:
     values:
     - _fieldName: Input
       _node: {fileID: -5748157594930024213}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: Output
       _node: {fileID: -5748157594930024213}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
@@ -72,7 +72,7 @@ MonoBehaviour:
     values:
     - _fieldName: Input
       _node: {fileID: -3498071549136064898}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: 2
@@ -84,7 +84,7 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: Output
       _node: {fileID: -3498071549136064898}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
@@ -123,7 +123,7 @@ MonoBehaviour:
     values:
     - _fieldName: Input
       _node: {fileID: -3289607706622269707}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: 1
@@ -135,7 +135,7 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: Output
       _node: {fileID: -3289607706622269707}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
@@ -174,7 +174,7 @@ MonoBehaviour:
     values:
     - _fieldName: Input
       _node: {fileID: -792430244279017397}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: 1
@@ -186,7 +186,7 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: Output
       _node: {fileID: -792430244279017397}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
@@ -246,7 +246,7 @@ MonoBehaviour:
     values:
     - _fieldName: Output
       _node: {fileID: 684701918469072944}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
@@ -292,7 +292,7 @@ MonoBehaviour:
     values:
     - _fieldName: Input
       _node: {fileID: 5216061007904464141}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Output
@@ -304,7 +304,7 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: Messages
       _node: {fileID: 5216061007904464141}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageNode[], Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageNode[], Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
@@ -374,7 +374,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f77b904e3dc274c44af9927716585b38, type: 3}
-  m_Name: '[ TestCharacter ] This is a follow-up...'
+  m_Name: '! SPEAKER DEFINITION MISSING !'
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -88, y: -248}
@@ -385,7 +385,7 @@ MonoBehaviour:
     values:
     - _fieldName: Input
       _node: {fileID: 7347136043768709548}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Output
@@ -397,7 +397,7 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: Output
       _node: {fileID: 7347136043768709548}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
@@ -443,7 +443,7 @@ MonoBehaviour:
     values:
     - _fieldName: Input
       _node: {fileID: 8354361562313498277}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Output
@@ -467,7 +467,7 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: Messages
       _node: {fileID: 8354361562313498277}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageNode[], Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageNode[], Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
@@ -604,7 +604,7 @@ MonoBehaviour:
     values:
     - _fieldName: Input
       _node: {fileID: 9216499691923650551}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: 0
@@ -616,7 +616,7 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: Output
       _node: {fileID: 9216499691923650551}
-      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Assembly-CSharp-Editor,
+      _typeQualifiedName: Bard.XNodeEditor.DialogueMessageBlockNode, Bard.DialogueSystem.Editor,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input

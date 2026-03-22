@@ -1,0 +1,16 @@
+{
+  "name": "com.github.blahnumbers.bard.dialoguesystem",
+  "displayName": "Bard Dialogue System",
+  "author": { "name": "Blahnumbers", "url": "https://github.com/blahnumbers" },
+  "description": "Customizable dialogue and quests system with visual editors based on xNode.",
+  "version": "0.1.0",
+  "unity": "6000.0",
+  "license": "MIT",
+  "dependencies": {
+    "com.unity.addressables": "2.7.6",
+    "com.unity.nuget.newtonsoft-json": "3.2.2",
+    "com.cysharp.unitask": "2.5.10",
+    "com.dbrizov.naughtyattributes": "2.1.4",
+    "com.github.blahnumbers.xnode": "1.8.1"
+  }
+}

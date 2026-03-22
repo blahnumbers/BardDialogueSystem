@@ -1,0 +1,22 @@
+{
+    "name": "Bard.DialogueSystem.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Bard.DialogueSystem",
+        "XNode",
+        "XNodeEditor",
+        "XNode.Groups",
+        "NaughtyAttributes.Core",
+        "Unity.Addressables",
+        "Unity.Addressables.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

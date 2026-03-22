@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6118945016914530976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4697240d3fe3a4acf937b3e24a56bec8, type: 3}
+  m_Name: Undefined
+  m_EditorClassIdentifier: 
+  Id: 0
+  InternalName: Undefined
+  EditorName: Undefined
+  DisplayNames:
+  - Undefined
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,14 +30,40 @@ MonoBehaviour:
   m_Name: CharacterDefinitions
   m_EditorClassIdentifier: 
   m_Definitions:
-  - Id: 0
-    InternalName: Undefined
-    EditorName: Undefined
-    DisplayNames:
-    - Undefined
-  - Id: 1
-    InternalName: TestCharacter
-    EditorName: Test Character
-    DisplayNames:
-    - Test Character Name
-    - Alternative Test Character Name
+  - {fileID: -6118945016914530976}
+  - {fileID: 4206728333002622920}
+  - {fileID: 1123872232375866200}
+--- !u!114 &1123872232375866200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4697240d3fe3a4acf937b3e24a56bec8, type: 3}
+  m_Name: SecondTestNPC
+  m_EditorClassIdentifier: 
+  Id: 2
+  InternalName: SecondTestNPC
+  EditorName: Second Test NPC
+  DisplayNames:
+  - Second Test NPC
+--- !u!114 &4206728333002622920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4697240d3fe3a4acf937b3e24a56bec8, type: 3}
+  m_Name: TestNPC
+  m_EditorClassIdentifier: 
+  Id: 1
+  InternalName: TestNPC
+  EditorName: Test NPC
+  DisplayNames:
+  - Test NPC

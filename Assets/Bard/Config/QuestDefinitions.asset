@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc84c688b4e8b47b3847e3d143e3c7cd, type: 3}
   m_Name: QuestDefinitions
   m_EditorClassIdentifier: 
+  m_Types:
+  - Id: 0
+    InternalName: Default
+    EditorName: Default
   m_Definitions:
   - Id: 0
     InternalName: Undefined
     EditorName: Undefined
-    Enabled: 1
-  - Id: 1
-    InternalName: TestQuest
-    EditorName: Tests/Test Quest
     Enabled: 1

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultAssetPath: Assets/Bard/GameAssets
   DataGenerationPath: Assets/Bard/GameAssets/GameData
-  Messages: {fileID: 11400000, guid: 917865edbac8849e4a78600a157365b4, type: 2}
-  MessageActions: {fileID: 11400000, guid: 4872bc6b465644e5684be63f1cf95a8c, type: 2}
-  Quests: {fileID: 11400000, guid: 7996e723da21d414a8f5c9898ab267ef, type: 2}
+  Messages: {fileID: 11400000, guid: 5a1525344a30f4117ac610a5e25560ba, type: 2}
+  MessageActions: {fileID: 11400000, guid: 29cc4843c68314a26a3c6916c8a18af9, type: 2}
+  Quests: {fileID: 11400000, guid: 95a8c7cb2a7a34ef2b686345ea58f55f, type: 2}
   QuestClassGenerationPath: Assets/Scripts/Bard/Generated
-  Characters: {fileID: 11400000, guid: 0aec0176bcfa04c2d92dd6181d387776, type: 2}
-  Localization: {fileID: 11400000, guid: 64f8ef6c23a044b2ebc56a7a6258a702, type: 2}
+  Characters: {fileID: 11400000, guid: 7a03fb31df0354069817faf59385c0da, type: 2}
+  Localization: {fileID: 11400000, guid: cc1ce85d406734df0a867e8792811979, type: 2}
