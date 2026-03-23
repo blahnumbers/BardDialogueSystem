@@ -14,6 +14,6 @@ namespace Bard.Configuration {
 #endif
 
 		public virtual void RebuildCaches() { }
-		private void OnValidate() => RebuildCaches();
+		protected virtual void OnValidate() => RebuildCaches();
 	}
 }
