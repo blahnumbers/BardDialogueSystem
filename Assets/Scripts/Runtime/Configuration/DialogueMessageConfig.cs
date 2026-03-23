@@ -7,7 +7,7 @@ namespace Bard.Configuration {
 	[CreateAssetMenu(menuName="Bard/Configuration/New Message Types Config", order=10)]
 	public class DialogueMessageConfig : ScriptableConfig {
 		public List<DialogueMessageType> Types = new() { new(0, "Default") };
-		private int m_MaxTypeId = 1;
+		[SerializeField] private int m_MaxTypeId = 1;
 		public int NextTypeId => m_MaxTypeId;
 		public string[] m_CachedTypeNames;
 		public string[] TypeNames {

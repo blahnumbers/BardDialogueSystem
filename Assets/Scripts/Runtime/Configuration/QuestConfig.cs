@@ -24,8 +24,8 @@ namespace Bard.Configuration {
 				return m_CachedQuestNames;
 			}
 		}
-		private int m_MaxId = 1;
-		private int m_MaxTypeId = 1;
+		[SerializeField] private int m_MaxId = 1;
+		[SerializeField] private int m_MaxTypeId = 1;
 
 		public override void RebuildCaches() {
 			m_CachedQuestNames = m_Definitions.Where(d => d.Enabled).Select(d => d.EditorName).ToArray();
