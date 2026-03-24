@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Success!
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1656, y: 216}
+  position: {x: 1896, y: 680}
   ports:
     keys:
     - Input
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 792, y: 216}
+  position: {x: 1032, y: 680}
   ports:
     keys:
     - Input
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Name: Failure :(
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1656, y: 440}
+  position: {x: 1896, y: 904}
   ports:
     keys:
     - Input
@@ -204,6 +204,27 @@ MonoBehaviour:
   Id: f3d145e0d02247418e483c65f1c0d432
   Input: {fileID: 0}
   Speaker: 0
+--- !u!114 &-415024148373664364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306090f0e3bc84da88f601b91b280ba0, type: 3}
+  m_Name: This is a group!
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 920, y: 488}
+  ports:
+    keys: []
+    values: []
+  width: 1513
+  height: 647
+  color: {r: 1, g: 1, b: 1, a: 0.1}
+  headerHeight: 102
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,6 +238,7 @@ MonoBehaviour:
   m_Name: TestDialogue
   m_EditorClassIdentifier: 
   nodes:
+  - {fileID: -415024148373664364}
   - {fileID: 684701918469072944}
   - {fileID: 7347136043768709548}
   - {fileID: 8354361562313498277}
@@ -282,7 +304,7 @@ MonoBehaviour:
   m_Name: Dialogue Message Block
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1224, y: 216}
+  position: {x: 1464, y: 680}
   ports:
     keys:
     - Input
