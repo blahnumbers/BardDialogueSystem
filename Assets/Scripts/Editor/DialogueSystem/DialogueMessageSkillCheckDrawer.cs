@@ -4,6 +4,7 @@ using System;
 using Bard.Configuration.Editor;
 using Bard.QuestSystem.Editor;
 using Bard.XNodeEditor;
+using Bard.Editor;
 
 namespace Bard.DialogueSystem.Editor {
 	[CustomPropertyDrawer(typeof(DialogueMessageSkillCheckModifier))]
@@ -59,7 +60,7 @@ namespace Bard.DialogueSystem.Editor {
 
 			var questPrefs = DialogueSystemPreferences.GetOrCreateSettings().Quests;
 			EditorGUI.LabelField(m_QuestLabelRect, "Target Quest");
-			check.Quest.intValue = EditorGUI.Popup(m_QuestRect, check.Quest.intValue, questPrefs.QuestNames);
+			check.Quest.intValue = BardEditorGUI.QuestPopup(m_QuestRect, check.Quest.intValue, questPrefs);
 			
 			var targetClass = QuestReflection.Get(questPrefs.GetById(check.Quest.intValue));
 			if (targetClass == null || (targetClass.ConditionsNames.Length == 0 && targetClass.StepsNames.Length < 2)) {

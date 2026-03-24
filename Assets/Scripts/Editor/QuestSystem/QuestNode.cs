@@ -3,6 +3,7 @@ using XNode;
 using XNodeEditor;
 using Bard.Configuration.Editor;
 using Bard.QuestSystem;
+using Bard.Editor;
 
 namespace Bard.XNodeEditor {
 	[CustomNodeEditor(typeof(QuestNode))]
@@ -19,7 +20,7 @@ namespace Bard.XNodeEditor {
 			serializedObject.Update();
 			
 			var qPrefs = DialogueSystemPreferences.GetOrCreateSettings().Quests;
-			m_Type.intValue = EditorGUILayout.Popup("Quest Type", m_Type.intValue, qPrefs.QuestTypes);
+			m_Type.intValue = BardEditorGUI.QuestTypePopup(m_Type.intValue, qPrefs);
 			EditorGUILayout.PropertyField(m_Hint);
 
 			serializedObject.ApplyModifiedProperties();

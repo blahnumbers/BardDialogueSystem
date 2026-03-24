@@ -12,6 +12,8 @@ namespace Bard.Configuration {
 		public IReadOnlyList<NPCDefinitionGroup> DefinitionGroups => m_DefinitionGroups;
 		public IReadOnlyList<NPCDefinition> Definitions => m_DefinitionGroups.SelectMany(dg => dg.Definitions).ToList();
 		private string[] m_CachedNames;
+		private int[] m_CachedIds;
+		private Dictionary<int, int> m_IdToIndex;
 		public string[] CharacterNames {
 			get {
 				if (m_CachedNames == null) RebuildCaches();
@@ -20,7 +22,20 @@ namespace Bard.Configuration {
 		}
 
 		public override void RebuildCaches() {
-			m_CachedNames = Definitions.Select(d => d.EditorName).ToArray();
+			var defs = Definitions;
+			m_CachedNames = defs.Select(d => d.EditorName).ToArray();
+			m_CachedIds = defs.Select(d => d.Id).ToArray();
+			m_IdToIndex = defs.Select((d, i) => (d.Id, i)).ToDictionary(x => x.Id, x => x.i);
+		}
+
+		public int GetIndexById(int id) {
+			if (m_IdToIndex == null) RebuildCaches();
+			return m_IdToIndex.TryGetValue(id, out var idx) ? idx : -1;
+		}
+
+		public int GetIdByIndex(int index) {
+			if (m_IdToIndex == null) RebuildCaches();
+			return index >= 0 && index < m_CachedIds.Length ? m_CachedIds[index] : -1;
 		}
 
 		public void VerifyIdIntegrity() {
