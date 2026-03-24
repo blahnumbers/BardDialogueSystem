@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bard.Configuration.Editor;
 using Bard.DialogueSystem;
+using Bard.Editor;
 
 namespace Bard.XNodeEditor {
 	public class SerializedMessageNodeProperties {
@@ -76,8 +77,8 @@ namespace Bard.XNodeEditor {
 			m_Rect.y += m_Rect.height + 4f;
 			m_Rect.height = EditorGUIUtility.singleLineHeight;
 
-			var messageTypeNames = DialogueSystemPreferences.GetOrCreateSettings().Messages.TypeNames;
-			data.Type.intValue = EditorGUI.Popup(m_Rect, data.Type.intValue, messageTypeNames);
+			var messageConfig = DialogueSystemPreferences.GetOrCreateSettings().Messages;
+			data.Type.intValue = BardEditorGUI.MessageTypePopup(m_Rect, data.Type.intValue, messageConfig);
 			m_Rect.y += m_Rect.height + 4f;
 			m_Rect.height = EditorGUI.GetPropertyHeight(data.Requirements);
 			EditorGUI.PropertyField(m_Rect, data.Requirements);

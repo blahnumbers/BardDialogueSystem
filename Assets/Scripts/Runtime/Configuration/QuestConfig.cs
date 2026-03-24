@@ -9,6 +9,8 @@ namespace Bard.Configuration {
 		[SerializeField] private List<QuestTypeDefinition> m_Types = new() { new(0, "Default") };
 		public IReadOnlyList<QuestTypeDefinition> Types => m_Types;
 		private string[] m_CachedQuestTypes;
+		private int[] m_CachedQuestTypeIds;
+		private Dictionary<int, int> m_TypeIdToIndex;
 		public string[] QuestTypes {
 			get {
 				if (m_CachedQuestTypes == null) RebuildCaches();
@@ -18,6 +20,8 @@ namespace Bard.Configuration {
 		[SerializeField] private List<QuestDefinition> m_Definitions = new() { new(0, "Undefined") };
 		public IReadOnlyList<QuestDefinition> Definitions => m_Definitions;
 		private string[] m_CachedQuestNames;
+		private int[] m_CachedQuestIds;
+		private Dictionary<int, int> m_QuestIdToIndex;
 		public string[] QuestNames {
 			get {
 				if (m_CachedQuestNames == null) RebuildCaches();
@@ -28,8 +32,34 @@ namespace Bard.Configuration {
 		[SerializeField] private int m_MaxTypeId = 1;
 
 		public override void RebuildCaches() {
-			m_CachedQuestNames = m_Definitions.Where(d => d.Enabled).Select(d => d.EditorName).ToArray();
+			var enabledQuests = m_Definitions.Where(d => d.Enabled);
+			m_CachedQuestNames = enabledQuests.Select(d => d.EditorName).ToArray();
+			m_CachedQuestIds = enabledQuests.Select(d => d.Id).ToArray();
+			m_QuestIdToIndex = enabledQuests.Select((d, i) => (d.Id, i)).ToDictionary(x => x.Id, x => x.i);
+
 			m_CachedQuestTypes = m_Types.Select(t => t.EditorName).ToArray();
+			m_CachedQuestTypeIds = m_Types.Select(t => t.Id).ToArray();
+			m_TypeIdToIndex = m_Types.Select((t, i) => (t.Id, i)).ToDictionary(x => x.Id, x => x.i);
+		}
+
+		public int GetIndexById(int id) {
+			if (m_QuestIdToIndex == null) RebuildCaches();
+			return m_QuestIdToIndex.TryGetValue(id, out var idx) ? idx : -1;
+		}
+
+		public int GetIdByIndex(int index) {
+			if (m_QuestIdToIndex == null) RebuildCaches();
+			return index >= 0 && index < m_CachedQuestIds.Length ? m_CachedQuestIds[index] : -1;
+		}
+
+		public int GetTypeIndexById(int id) {
+			if (m_TypeIdToIndex == null) RebuildCaches();
+			return m_TypeIdToIndex.TryGetValue(id, out var idx) ? idx : -1;
+		}
+
+		public int GetTypeIdByIndex(int index) {
+			if (m_TypeIdToIndex == null) RebuildCaches();
+			return index >= 0 && index < m_CachedQuestTypeIds.Length ? m_CachedQuestTypeIds[index] : -1;
 		}
 
 		public void AddType(string name = "") {

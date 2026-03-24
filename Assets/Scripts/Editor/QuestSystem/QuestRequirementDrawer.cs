@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using Bard.Configuration.Editor;
+using Bard.Editor;
 
 namespace Bard.QuestSystem.Editor {
 	[CustomPropertyDrawer(typeof(QuestRequirementTyped))]
@@ -17,18 +18,18 @@ namespace Bard.QuestSystem.Editor {
 			m_Rect.height = EditorGUIUtility.singleLineHeight;
 			GUI.Label(m_Rect, "Id");
 
-			var prefs = DialogueSystemPreferences.GetOrCreateSettings();
+			var questPrefs = DialogueSystemPreferences.GetOrCreateSettings().Quests;
 			m_Rect.x += m_Rect.width;
 			m_Rect.width = position.width - m_Rect.width;
 			var id = property.FindPropertyRelative("Id");
-			id.intValue = EditorGUI.Popup(m_Rect, id.intValue, prefs.Quests.QuestNames);
+			id.intValue = BardEditorGUI.QuestPopup(m_Rect, id.intValue, questPrefs);
 
 			m_Rect.x = position.x;
 			m_Rect.y += m_Rect.height + 2;
 			m_Rect.width = position.width / 3 - 4;
 			var step = property.FindPropertyRelative("Step");
 			var condition = property.FindPropertyRelative("Condition");
-			var targetClass = QuestReflection.Get(prefs.Quests.GetById(id.intValue));
+			var targetClass = QuestReflection.Get(questPrefs.GetById(id.intValue));
 			if (targetClass == null || (targetClass.ConditionsNames.Length == 0 && targetClass.StepsNames.Length < 2)) {
 				return;
 			}

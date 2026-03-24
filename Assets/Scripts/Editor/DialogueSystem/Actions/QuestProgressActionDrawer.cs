@@ -3,13 +3,14 @@ using UnityEditor;
 using Bard.Configuration.Editor;
 using Bard.DialogueSystem.Editor;
 using Bard.QuestSystem.Editor;
+using Bard.Editor;
 
 namespace Bard.DialogueSystem.Actions.Editor {
 	[DialogueActionDrawer(typeof(QuestProgressAction))]
 	public class QuestProgressActionDrawer : DialogueActionDrawer {
 		public override void DrawInspector(SerializedMessageAction data, MessageActionRects rects, DialogueProjectSettings prefs) {
 			EditorGUI.LabelField(rects.Label1, "Id");
-			data.CValue.intValue = EditorGUI.Popup(rects.Input1, data.CValue.intValue, prefs.Quests.QuestNames);
+			data.CValue.intValue = BardEditorGUI.QuestPopup(rects.Input1, data.CValue.intValue, prefs);
 			
 			rects.Label2.y = rects.Input2.y = rects.Input1.y + rects.Input1.height + 2f;
 

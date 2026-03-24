@@ -8,6 +8,7 @@ using XNode;
 using XNodeEditor;
 using Bard.DialogueSystem;
 using Bard.Configuration.Editor;
+using Bard.Editor;
 
 namespace Bard.XNodeEditor {
 	[CustomNodeEditor(typeof(DialogueNode))]
@@ -92,7 +93,7 @@ namespace Bard.XNodeEditor {
 			}
 			var charPrefs = DialogueSystemPreferences.GetOrCreateSettings().Characters;
 			GUILayout.Label("Speaker Override", GUILayout.Width(120));
-			m_Speaker.intValue = EditorGUILayout.Popup(m_Speaker.intValue, charPrefs.CharacterNames);
+			m_Speaker.intValue = BardEditorGUI.NpcPopup(m_Speaker.intValue, charPrefs);
 			GUI.contentColor = color;
 			GUILayout.EndHorizontal();
 
