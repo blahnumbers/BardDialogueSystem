@@ -8,7 +8,7 @@ namespace Bard.Editor {
 		public static int QuestPopup(Rect rect, int currentId, DialogueProjectSettings prefs) {
 			return QuestPopup(rect, currentId, prefs.Quests);
 		}
-		
+
 		public static int QuestPopup(Rect rect, int currentId, QuestConfig questPrefs) {
 			var curIndex = questPrefs.GetIndexById(currentId);
 			var newIndex = EditorGUI.Popup(rect, curIndex, questPrefs.QuestNames);
@@ -18,7 +18,7 @@ namespace Bard.Editor {
 		public static int QuestPopup(int currentId, DialogueProjectSettings prefs) {
 			return QuestPopup(currentId, prefs.Quests);
 		}
-		
+
 		public static int QuestPopup(int currentId, QuestConfig questPrefs) {
 			var curIndex = questPrefs.GetIndexById(currentId);
 			var newIndex = EditorGUILayout.Popup(curIndex, questPrefs.QuestNames);
@@ -28,7 +28,7 @@ namespace Bard.Editor {
 		public static int QuestTypePopup(Rect rect, int currentId, DialogueProjectSettings prefs) {
 			return QuestTypePopup(rect, currentId, prefs.Quests);
 		}
-		
+
 		public static int QuestTypePopup(Rect rect, int currentId, QuestConfig questPrefs) {
 			var curIndex = questPrefs.GetTypeIndexById(currentId);
 			var newIndex = EditorGUI.Popup(rect, curIndex, questPrefs.QuestTypes);
@@ -38,7 +38,7 @@ namespace Bard.Editor {
 		public static int QuestTypePopup(int currentId, DialogueProjectSettings prefs) {
 			return QuestTypePopup(currentId, prefs.Quests);
 		}
-		
+
 		public static int QuestTypePopup(int currentId, QuestConfig questPrefs) {
 			var curIndex = questPrefs.GetTypeIndexById(currentId);
 			var newIndex = EditorGUILayout.Popup(curIndex, questPrefs.QuestTypes);
@@ -48,7 +48,7 @@ namespace Bard.Editor {
 		public static int NpcPopup(Rect rect, int currentId, DialogueProjectSettings prefs) {
 			return NpcPopup(rect, currentId, prefs.Characters);
 		}
-		
+
 		public static int NpcPopup(Rect rect, int currentId, CharacterConfig charPrefs) {
 			var curIndex = charPrefs.GetIndexById(currentId);
 			var newIndex = EditorGUI.Popup(rect, curIndex, charPrefs.CharacterNames);
@@ -58,11 +58,29 @@ namespace Bard.Editor {
 		public static int NpcPopup(int currentId, DialogueProjectSettings prefs) {
 			return NpcPopup(currentId, prefs.Characters);
 		}
-		
+
 		public static int NpcPopup(int currentId, CharacterConfig charPrefs) {
 			var curIndex = charPrefs.GetIndexById(currentId);
 			var newIndex = EditorGUILayout.Popup(curIndex, charPrefs.CharacterNames);
 			return newIndex != curIndex ? charPrefs.GetIdByIndex(newIndex) : currentId;
+		}
+
+		public static int NpcNamePopup(Rect rect, int currentId, int npcId, DialogueProjectSettings prefs) {
+			return NpcNamePopup(rect, currentId, npcId, prefs.Characters);
+		}
+
+		public static int NpcNamePopup(Rect rect, int currentId, int npcId, CharacterConfig charPrefs) {
+			var npcNames = charPrefs.GetById(npcId).DisplayNames;
+			return EditorGUI.Popup(rect, currentId, npcNames);
+		}
+
+		public static int NpcNamePopup(int currentId, int npcId, DialogueProjectSettings prefs) {
+			return NpcNamePopup(currentId, npcId, prefs.Characters);
+		}
+
+		public static int NpcNamePopup(int currentId, int npcId, CharacterConfig charPrefs) {
+			var npcNames = charPrefs.GetById(npcId).DisplayNames;
+			return EditorGUILayout.Popup(currentId, npcNames);
 		}
 
 		public static int MessageTypePopup(Rect rect, int currentId, DialogueProjectSettings prefs) {
