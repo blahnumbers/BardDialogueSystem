@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using Bard.DialogueSystem;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,6 +11,7 @@ namespace Bard.Configuration.Editor {
 		private const string FirstInstallKey = "BardDialogue.Installed";
 
 		private static DialogueProjectSettings settings;
+		private static readonly GUIContent guiContent = new("");
 
 		static DialogueSystemPreferences() {
 			EditorApplication.delayCall += () => {
@@ -37,16 +37,72 @@ namespace Bard.Configuration.Editor {
 			var settings = GetOrCreateSettings();
 			SerializedObject so = new(settings);
 
-			EditorGUILayout.PropertyField(so.FindProperty("DefaultAssetPath"));
-			EditorGUILayout.PropertyField(so.FindProperty("DataGenerationPath"));
-		
-			EditorGUILayout.PropertyField(so.FindProperty("Messages"), new GUIContent("Types Asset"));
-			EditorGUILayout.PropertyField(so.FindProperty("MessageActions"), new GUIContent("Actions Asset"));
+			EditorGUI.BeginChangeCheck();
+			var defaultAssetPath = so.FindProperty("DefaultAssetPath");
+			var oldDefaultAssetPath = defaultAssetPath.stringValue;
+			EditorGUILayout.DelayedTextField(defaultAssetPath);
+			if (EditorGUI.EndChangeCheck()) {
+				var newPath = defaultAssetPath.stringValue;
+				Directory.CreateDirectory(newPath);
 
-			EditorGUILayout.PropertyField(so.FindProperty("Quests"), new GUIContent("Definitions Asset"));
-			EditorGUILayout.PropertyField(so.FindProperty("QuestClassGenerationPath"), new GUIContent("Class Generation Path"));
+				if (!Directory.Exists(oldDefaultAssetPath)) {
+					AssetDatabase.Refresh();
+					return;
+				}
 
-			EditorGUILayout.PropertyField(so.FindProperty("Characters"), new GUIContent("Characters Asset"));
+				var hasGraphsDir = Directory.Exists(Path.Combine(oldDefaultAssetPath, "DialogueGraphs"));
+				var hasQuestsDir = Directory.Exists(Path.Combine(oldDefaultAssetPath, "QuestGraphs"));
+				if (hasGraphsDir || hasQuestsDir) {
+					if (EditorUtility.DisplayDialog("Changing default assets path", "Would you like to move your existing graphs data to the new location?", "Yes", "No")) {
+						if (hasGraphsDir) {
+							Directory.Move(Path.Combine(oldDefaultAssetPath, "DialogueGraphs"), Path.Combine(newPath, "DialogueGraphs"));
+						}
+						if (hasQuestsDir) {
+							Directory.Move(Path.Combine(oldDefaultAssetPath, "QuestGraphs"), Path.Combine(newPath, "QuestGraphs"));
+						}
+					}
+				}
+				if (Directory.GetDirectories(oldDefaultAssetPath).Length == 0 && Directory.GetFiles(oldDefaultAssetPath).Length == 0) {
+					Directory.Delete(oldDefaultAssetPath);
+				}
+				AssetDatabase.Refresh();
+			}
+			EditorGUI.BeginChangeCheck();
+			var dataGenPath = so.FindProperty("DataGenerationPath");
+			var oldDataGenPath = dataGenPath.stringValue;
+			EditorGUILayout.PropertyField(dataGenPath);
+			if (EditorGUI.EndChangeCheck()) {
+				if (!Directory.Exists(oldDataGenPath)) {
+					AssetDatabase.Refresh();
+					return;
+				}
+
+				if (Directory.GetDirectories(oldDataGenPath).Length > 0) {
+					if (EditorUtility.DisplayDialog("Changing data generation path", "Would you like to move your existing data to the new location?", "Yes", "No")) {
+						Directory.Move(oldDataGenPath, dataGenPath.stringValue);
+					}
+				}
+				if (Directory.GetDirectories(oldDataGenPath).Length == 0 && Directory.GetFiles(oldDataGenPath).Length == 0) {
+					Directory.Delete(oldDataGenPath);
+				}
+				AssetDatabase.Refresh();
+			}
+
+			guiContent.text = "Types Asset";
+			EditorGUILayout.PropertyField(so.FindProperty("Messages"), guiContent);
+			guiContent.text = "Actions Asset";
+			EditorGUILayout.PropertyField(so.FindProperty("MessageActions"), guiContent);
+
+			guiContent.text = "Definitions Asset";
+			EditorGUILayout.PropertyField(so.FindProperty("Quests"), guiContent);
+			guiContent.text = "Class Generation Path";
+			EditorGUILayout.PropertyField(so.FindProperty("QuestClassGenerationPath"), guiContent);
+
+			guiContent.text = "Characters Asset";
+			EditorGUILayout.PropertyField(so.FindProperty("Characters"), guiContent);
+
+			guiContent.text = "Localization Asset";
+			EditorGUILayout.PropertyField(so.FindProperty("Localization"), guiContent);
 
 			so.ApplyModifiedProperties();
 		}
@@ -90,7 +146,7 @@ namespace Bard.Configuration.Editor {
 		private static void EnsureDefaultRegistries(DialogueProjectSettings settings) {
 			bool dirty = false;
 			var settingsPath = AssetDatabase.GetAssetPath(settings);
-			var configPath = Path.Combine(Path.GetDirectoryName(settingsPath), "Config"); 
+			var configPath = Path.Combine(Path.GetDirectoryName(settingsPath), "Config");
 
 			dirty |= CreateOrInitializeRegistry(ref settings.Messages, configPath, "MessageTypes.asset");
 			dirty |= CreateOrInitializeRegistry(ref settings.MessageActions, configPath, "MessageActions.asset");
@@ -106,8 +162,7 @@ namespace Bard.Configuration.Editor {
 
 		private static bool CreateOrInitializeRegistry<T>(
 			ref T registry, string configPath, string name)
-			where T : ScriptableConfig
-		{
+			where T : ScriptableConfig {
 			if (registry == null) {
 				registry = CreateRegistry<T>(configPath, name);
 				return true;

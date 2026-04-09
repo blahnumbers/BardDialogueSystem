@@ -4,9 +4,11 @@ using System.IO;
 namespace Bard.Configuration.Editor {
 	public class DialogueProjectSettings : ScriptableObject {
 		[Header("General Settings")]
-		public string DefaultAssetPath = "Assets/Bard/GameAssets";
-		public string DataGenerationPath = "Assets/Bard/GameAssets/GameData";
+		public string DefaultAssetPath = "Assets/Bard";
+		public string DataGenerationPath = "Assets/Bard/GameData";
 		public string QuestDataGenerationPath => Path.Combine(DataGenerationPath, "Quests.json");
+		public string DialogueGraphsPath => Path.Combine(DefaultAssetPath, "DialogueGraphs");
+		public string QuestsGraphsPath => Path.Combine(DefaultAssetPath, "QuestGraphs");
 
 		[Header("Dialogue Messages Settings")]
 		public DialogueMessageConfig Messages;

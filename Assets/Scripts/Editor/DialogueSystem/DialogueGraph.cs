@@ -8,22 +8,31 @@ using Newtonsoft.Json;
 using XNode;
 using XNodeEditor;
 using Bard.DialogueSystem;
+using Bard.Configuration.Editor;
 
 namespace Bard.XNodeEditor {
 	[CustomNodeGraphEditor(typeof(DialogueGraph))]
 	public class DialogueGraphContextMenu : NodeGraphEditor {
+		private string GetGraphDirectory(NodeGraph target) {
+			var graphPath = AssetDatabase.GetAssetPath(target);
+			var directories = Path.GetDirectoryName(graphPath).Replace("\\", "/").Split("/");
+			var graphDirectory = directories.Last();
+
+			var defaultPath = DialogueSystemPreferences.GetOrCreateSettings().DialogueGraphsPath;
+			if (graphPath.StartsWith(defaultPath)) {
+				graphPath = graphPath[(defaultPath.Length + 1)..];
+				directories = Path.GetDirectoryName(graphPath).Replace("\\", "/").Split("/");
+				graphDirectory = string.Join('_', directories);
+			}
+			return graphDirectory;
+		}
+
 		public override void AddContextMenuItems(GenericMenu menu, Type[] types) {
 			base.AddContextMenuItems(menu, new Type[] { typeof(DialogueNodeGroup), typeof(DialogueRootNode), typeof(DialogueNode), typeof(DialogueMessageBlockNode) });
 
 			menu.AddSeparator("");
 			menu.AddItem(new GUIContent("Export/This graph only"), false, () => {
-				var graphPath = AssetDatabase.GetAssetPath(target);
-				var directories = Path.GetDirectoryName(graphPath).Replace("\\", "/").Split("/").ToList();
-				var graphDirectory = directories.Last();
-				if (directories.Count > 4 && directories[0] == "Assets" && directories[1] == "GameAssets" && directories[2] == "DialogueGraphs") {
-					directories.RemoveRange(0, 3);
-					graphDirectory = string.Join('_', directories);
-				}
+				var graphDirectory = GetGraphDirectory(target);
 				string path = Path.Combine(DialogueGraphUtils.ExportPath, $"{graphDirectory}.json");
 				string locPath = Path.Combine(DialogueGraphUtils.LocExportPath, $"{graphDirectory}.json");
 
@@ -92,13 +101,7 @@ namespace Bard.XNodeEditor {
 				AssetDatabase.Refresh();
 			});
 			menu.AddItem(new GUIContent("Export/All graphs in folder"), false, () => {
-				var graphPath = AssetDatabase.GetAssetPath(target);
-				var directories = Path.GetDirectoryName(graphPath).Replace("\\", "/").Split("/").ToList();
-				var graphDirectory = directories.Last();
-				if (directories.Count > 4 && directories[0] == "Assets" && directories[1] == "GameAssets" && directories[2] == "DialogueGraphs") {
-					directories.RemoveRange(0, 3);
-					graphDirectory = string.Join('_', directories);
-				}
+				var graphDirectory = GetGraphDirectory(target);
 
 				string path = Path.Combine(DialogueGraphUtils.ExportPath, $"{graphDirectory}.json");
 				string locPath = Path.Combine(DialogueGraphUtils.LocExportPath, $"{graphDirectory}.json");
@@ -110,6 +113,7 @@ namespace Bard.XNodeEditor {
 
 				DialogueGraphUtils.DefaultLocalization.Clear();
 				var trees = new List<DialogueTree>();
+				var graphPath = AssetDatabase.GetAssetPath(target);
 				foreach (var file in Directory.GetFiles(Path.GetDirectoryName(graphPath), "*.asset")) {
 					var graph = AssetDatabase.LoadAssetAtPath(file, typeof(DialogueGraph)) as DialogueGraph;
 					Debug.Log("Exporting " + graph.name);
@@ -148,7 +152,7 @@ namespace Bard.XNodeEditor {
 		public static void CreateDialogueGraph() {
 			string selectedPath = NodeGraphUtils.GetSelectedPath();
 			if (string.IsNullOrEmpty(selectedPath)) {
-				selectedPath = "Assets/GameAssets/DialogueGraphs/";
+				selectedPath = DialogueSystemPreferences.GetOrCreateSettings().DialogueGraphsPath;
 			}
 
 			string path = EditorUtility.SaveFilePanelInProject(

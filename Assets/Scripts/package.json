@@ -6,7 +6,7 @@
 		"url": "https://github.com/blahnumbers"
 	},
 	"description": "Customizable dialogue and quests system with visual editors based on xNode.",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"unity": "6000.0",
 	"license": "MIT",
 	"dependencies": {

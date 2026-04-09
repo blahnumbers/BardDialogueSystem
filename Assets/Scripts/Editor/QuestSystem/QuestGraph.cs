@@ -4,6 +4,7 @@ using System.IO;
 using XNode;
 using UnityEditor;
 using XNodeEditor;
+using Bard.Configuration.Editor;
 
 namespace Bard.XNodeEditor {
 	[CustomNodeGraphEditor(typeof(QuestGraph))]
@@ -35,7 +36,7 @@ namespace Bard.XNodeEditor {
 		public static void CreateDialogueGraph() {
 			string selectedPath = NodeGraphUtils.GetSelectedPath();
 			if (string.IsNullOrEmpty(selectedPath)) {
-				selectedPath = QuestGraphUtils.ExportPath;
+				selectedPath = DialogueSystemPreferences.GetOrCreateSettings().QuestsGraphsPath;
 			}
 			string path = EditorUtility.SaveFilePanelInProject(
 				"Creating New Quest Graph",
